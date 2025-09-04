@@ -3,7 +3,7 @@
 require_once 'config/database.php';
 
 class Migration {
-    private $pdo;
+    private ?PDO $pdo;
 
     public function __construct() {
         $database = new Database();
@@ -14,7 +14,7 @@ class Migration {
         }
     }
 
-    public function runMigration($migrationFile) {
+    public function runMigration(string $migrationFile): bool {
         try {
             echo "Exécution de la migration: " . $migrationFile . "\n";
             
@@ -74,7 +74,7 @@ class Migration {
         return true;
     }
 
-    public function runAllMigrations() {
+    public function runAllMigrations(): bool {
         $migrationDir = 'database/migrations/';
         $migrationFiles = glob($migrationDir . '*.sql');
         sort($migrationFiles);
