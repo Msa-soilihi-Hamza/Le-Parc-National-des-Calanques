@@ -117,7 +117,7 @@ class AuthController
     public function logout(): void
     {
         $this->authService->logout();
-        header('Location: ' . $this->url('/login?message=logged_out'));
+        header('Location: ' . $this->url('/login'));
         exit;
     }
 

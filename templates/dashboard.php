@@ -37,16 +37,16 @@
         <div class="header-content">
             <div class="logo">🏞️ Parc des Calanques</div>
             <nav class="nav-links">
-                <a href="/dashboard">Tableau de bord</a>
-                <a href="/profile">Profil</a>
+                <a href="<?= $GLOBALS['basePath'] ?? '' ?>/dashboard">Tableau de bord</a>
+                <a href="<?= $GLOBALS['basePath'] ?? '' ?>/profile">Profil</a>
                 <?php if ($user->isAdmin()): ?>
-                    <a href="/admin">Administration</a>
+                    <a href="<?= $GLOBALS['basePath'] ?? '' ?>/admin">Administration</a>
                 <?php endif; ?>
                 <div class="user-info">
                     <?= htmlspecialchars($user->getFullName()) ?>
                     (<?= htmlspecialchars($user->getRole()) ?>)
                 </div>
-                <a href="/logout">Déconnexion</a>
+                <a href="<?= $GLOBALS['basePath'] ?? '' ?>/logout">Déconnexion</a>
             </nav>
         </div>
     </header>
@@ -77,7 +77,7 @@
                         <div class="stat-label">Visites passées</div>
                     </div>
                 </div>
-                <a href="/visits" class="btn">Gérer les visites</a>
+                <a href="<?= $GLOBALS['basePath'] ?? '' ?>/visits" class="btn">Gérer les visites</a>
             </div>
 
             <div class="card">
@@ -93,7 +93,7 @@
                         <div class="stat-label">Points d'intérêt</div>
                     </div>
                 </div>
-                <a href="/routes" class="btn">Voir les itinéraires</a>
+                <a href="<?= $GLOBALS['basePath'] ?? '' ?>/routes" class="btn">Voir les itinéraires</a>
             </div>
 
             <div class="card">
@@ -105,7 +105,7 @@
                     <li>Règlement du parc</li>
                     <li>Conseils de sécurité</li>
                 </ul>
-                <a href="/resources" class="btn btn-secondary">Consulter</a>
+                <a href="<?= $GLOBALS['basePath'] ?? '' ?>/resources" class="btn btn-secondary">Consulter</a>
             </div>
 
             <?php if ($user->isAdmin()): ?>
@@ -122,7 +122,7 @@
                         <div class="stat-label">Admins</div>
                     </div>
                 </div>
-                <a href="/admin" class="btn">Panel d'admin</a>
+                <a href="<?= $GLOBALS['basePath'] ?? '' ?>/admin" class="btn">Panel d'admin</a>
             </div>
             <?php endif; ?>
         </div>
