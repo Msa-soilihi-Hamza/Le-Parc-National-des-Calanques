@@ -1,5 +1,10 @@
 <?php
 
+// Load Composer autoloader first
+if (file_exists(__DIR__ . '/vendor/autoload.php')) {
+    require_once __DIR__ . '/vendor/autoload.php';
+}
+
 // Simple autoloader for the project
 spl_autoload_register(function ($class) {
     // Convert namespace to file path

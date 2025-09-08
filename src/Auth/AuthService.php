@@ -14,7 +14,8 @@ class AuthService
     
     public function __construct(
         private UserRepository $userRepository,
-        private SessionManager $sessionManager
+        private SessionManager $sessionManager,
+        private ?JwtService $jwtService = null
     ) {}
 
     public function login(string $email, string $password, bool $remember = false): User
@@ -37,6 +38,71 @@ class AuthService
 
         if ($remember) {
             $this->createRememberToken($user);
+        }
+
+        return $user;
+    }
+
+    public function loginWithJwt(string $email, string $password): array
+    {
+        if (!$this->jwtService) {
+            throw new AuthException('JWT service not available');
+        }
+
+        $user = $this->userRepository->findByEmail($email);
+        
+        if (!$user) {
+            throw new AuthException(AuthException::USER_NOT_FOUND);
+        }
+
+        if (!$user->isActive()) {
+            throw new AuthException(AuthException::USER_INACTIVE);
+        }
+
+        if (!$user->verifyPassword($password)) {
+            throw new AuthException(AuthException::INVALID_CREDENTIALS);
+        }
+
+        $tokens = $this->jwtService->generateTokenPair($user);
+        
+        return [
+            'user' => $user->toArray(),
+            'tokens' => $tokens
+        ];
+    }
+
+    public function refreshJwtToken(string $refreshToken): array
+    {
+        if (!$this->jwtService) {
+            throw new AuthException('JWT service not available');
+        }
+
+        $tokenData = $this->jwtService->refreshAccessToken($refreshToken);
+        $user = $this->userRepository->findById($tokenData['user_id']);
+        
+        if (!$user || !$user->isActive()) {
+            throw new AuthException('User not found or inactive');
+        }
+
+        $tokens = $this->jwtService->generateTokenPair($user);
+        
+        return [
+            'user' => $user->toArray(),
+            'tokens' => $tokens
+        ];
+    }
+
+    public function validateJwtToken(string $token): User
+    {
+        if (!$this->jwtService) {
+            throw new AuthException('JWT service not available');
+        }
+
+        $userId = $this->jwtService->getUserIdFromToken($token);
+        $user = $this->userRepository->findById($userId);
+        
+        if (!$user || !$user->isActive()) {
+            throw new AuthException('User not found or inactive');
         }
 
         return $user;

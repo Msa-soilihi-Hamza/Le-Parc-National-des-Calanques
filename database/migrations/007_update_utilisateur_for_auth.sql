@@ -4,8 +4,8 @@
 -- =====================================================
 
 -- Création de la base de données
-CREATE DATABASE IF NOT EXISTS parc_naturel;
-USE parc_naturel;
+CREATE DATABASE IF NOT EXISTS `le-parc-national-des-calanques`;
+USE `le-parc-national-des-calanques`;
 
 -- Désactiver les vérifications de clés étrangères temporairement
 SET FOREIGN_KEY_CHECKS = 0;
@@ -74,8 +74,8 @@ CREATE TABLE Utilisateur (
     -- Clé étrangère vers Role (optionnelle)
     FOREIGN KEY (id_role) REFERENCES Role(id_role) ON DELETE SET NULL,
     
-    -- Index pour optimisation
-    INDEX idx_email (email(191)),
+    -- Index pour optimisation  
+    INDEX idx_email (email),
     INDEX idx_role_enum (role),
     INDEX idx_role_fk (id_role),
     INDEX idx_active (is_active),
@@ -266,7 +266,7 @@ CREATE TABLE users (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     
     -- Index
-    INDEX idx_email (email(191)),
+    INDEX idx_email (email),
     INDEX idx_role (role),
     INDEX idx_active (is_active),
     INDEX idx_remember_token (remember_token)
@@ -284,7 +284,7 @@ SELECT
     REFERENCED_TABLE_NAME,
     REFERENCED_COLUMN_NAME
 FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
-WHERE REFERENCED_TABLE_SCHEMA = 'parc_naturel'
+WHERE REFERENCED_TABLE_SCHEMA = 'le-parc-national-des-calanques'
 AND REFERENCED_TABLE_NAME IS NOT NULL;
 
 -- =====================================================

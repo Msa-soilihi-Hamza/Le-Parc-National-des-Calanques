@@ -11,6 +11,8 @@ class AuthBootstrap
 {
     private static ?AuthService $authService = null;
     private static ?UserRepository $userRepository = null;
+    private static ?JwtService $jwtService = null;
+    private static ?JwtMiddleware $jwtMiddleware = null;
 
     public static function init(): AuthService
     {
@@ -26,7 +28,8 @@ class AuthBootstrap
             // Initialize repositories and services
             self::$userRepository = new UserRepository($pdo);
             $sessionManager = new SessionManager(self::$userRepository);
-            self::$authService = new AuthService(self::$userRepository, $sessionManager);
+            self::$jwtService = new JwtService();
+            self::$authService = new AuthService(self::$userRepository, $sessionManager, self::$jwtService);
 
             // Initialize AuthGuard
             AuthGuard::init(self::$authService);
@@ -57,5 +60,36 @@ class AuthBootstrap
         }
 
         return new AuthMiddleware(self::$authService);
+    }
+
+    public static function getJwtService(): ?JwtService
+    {
+        return self::$jwtService;
+    }
+
+    public static function jwtMiddleware(): JwtMiddleware
+    {
+        if (self::$authService === null) {
+            self::init();
+        }
+
+        if (self::$jwtMiddleware === null) {
+            self::$jwtMiddleware = new JwtMiddleware(self::$jwtService, self::$userRepository);
+        }
+
+        return self::$jwtMiddleware;
+    }
+
+    public static function apiController(): \ParcCalanques\Controllers\ApiController
+    {
+        if (self::$authService === null) {
+            self::init();
+        }
+
+        return new \ParcCalanques\Controllers\ApiController(
+            self::$authService,
+            self::$jwtService,
+            self::jwtMiddleware()
+        );
     }
 }
