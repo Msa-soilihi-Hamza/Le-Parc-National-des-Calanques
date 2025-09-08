@@ -1,0 +1,67 @@
+{
+  "agents": {
+    "auth": {
+      "name": "Agent Authentification",
+      "description": "Spécialisé dans l'authentification JWT, sécurité, gestion des sessions",
+      "context": {
+        "tables": ["Utilisateur", "Role"],
+        "directories": ["src/Auth/", "src/Controllers/AuthController.php"],
+        "focus": ["JWT", "sécurité", "authentification", "sessions", "middleware", "guards"]
+      }
+    },
+    "users": {
+      "name": "Agent Utilisateurs",
+      "description": "CRUD utilisateurs, profils, gestion des rôles",
+      "context": {
+        "tables": ["Utilisateur", "Role"],
+        "directories": ["src/Models/User.php", "src/Models/UserRepository.php"],
+        "focus": ["CRUD utilisateurs", "profils", "rôles", "permissions"]
+      }
+    },
+    "zones": {
+      "name": "Agent Zones",
+      "description": "Gestion des zones du parc, sentiers, points d'intérêt",
+      "context": {
+        "tables": ["Zone", "Sentier", "Point_Interet"],
+        "directories": [],
+        "focus": ["zones géographiques", "sentiers", "points d'intérêt", "cartographie"]
+      }
+    },
+    "reservations": {
+      "name": "Agent Réservations",
+      "description": "Système de réservations pour le camping",
+      "context": {
+        "tables": ["Camping", "Reservation", "Utilisateur"],
+        "directories": [],
+        "focus": ["réservations", "camping", "disponibilités", "planning"]
+      }
+    },
+    "payments": {
+      "name": "Agent Paiements",
+      "description": "Intégration Stripe/PayPal, gestion des transactions",
+      "context": {
+        "tables": ["Paiement", "Reservation"],
+        "directories": [],
+        "focus": ["Stripe", "PayPal", "transactions", "factures", "remboursements"]
+      }
+    },
+    "resources": {
+      "name": "Agent Ressources",
+      "description": "Gestion de la faune et flore du parc",
+      "context": {
+        "tables": ["Ressource_Naturelle", "Zone"],
+        "directories": [],
+        "focus": ["faune", "flore", "biodiversité", "conservation", "inventaire"]
+      }
+    },
+    "notifications": {
+      "name": "Agent Notifications",
+      "description": "Système de notifications et alertes",
+      "context": {
+        "tables": ["Notification", "Utilisateur"],
+        "directories": [],
+        "focus": ["notifications", "emails", "SMS", "alertes", "communications"]
+      }
+    }
+  }
+}

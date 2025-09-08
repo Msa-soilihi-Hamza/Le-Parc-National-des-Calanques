@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscription - Parc National des Calanques</title>
-    <link href="/css/auth.css" rel="stylesheet">
+    <link href="<?= $GLOBALS['basePath'] ?? '' ?>/css/auth.css" rel="stylesheet">
 </head>
 <body>
     <div class="auth-container">
@@ -30,7 +30,7 @@
                 </div>
             <?php endif; ?>
 
-            <form method="POST" action="/register" class="auth-form">
+            <form method="POST" action="<?= $GLOBALS['basePath'] ?? '' ?>/register" class="auth-form">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="first_name">Prénom</label>
@@ -111,7 +111,7 @@
                     <label class="checkbox-label">
                         <input type="checkbox" name="terms" value="1" required>
                         <span class="checkmark"></span>
-                        J'accepte les <a href="/terms" target="_blank">conditions d'utilisation</a>
+                        J'accepte les <a href="<?= $GLOBALS['basePath'] ?? '' ?>/terms" target="_blank">conditions d'utilisation</a>
                     </label>
                 </div>
 
@@ -131,7 +131,7 @@
             <div class="auth-links">
                 <p>
                     Déjà un compte ? 
-                    <a href="/login">Se connecter</a>
+                    <a href="<?= $GLOBALS['basePath'] ?? '' ?>/login">Se connecter</a>
                 </p>
             </div>
         </div>
@@ -148,6 +148,6 @@
         </div>
     </div>
 
-    <script src="/js/auth.js"></script>
+    <script src="<?= $GLOBALS['basePath'] ?? '' ?>/js/auth.js"></script>
 </body>
 </html>

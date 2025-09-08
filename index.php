@@ -39,7 +39,7 @@ try {
         case '/':
             // Homepage - show different content based on auth status
             if (AuthGuard::check()) {
-                header('Location: ' . url('/dashboard'));
+                header('Location: ' . url('/profile'));
             } else {
                 header('Location: ' . url('/login'));
             }
@@ -65,13 +65,6 @@ try {
             $authController->logout();
             break;
 
-        case '/dashboard':
-            $authController->dashboard();
-            break;
-
-        case '/admin':
-            $authController->adminPanel();
-            break;
 
         case '/profile':
             $authController->profile();

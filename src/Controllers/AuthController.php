@@ -24,7 +24,7 @@ class AuthController
     {
         // Redirect if already authenticated
         if ($this->authService->isAuthenticated()) {
-            header('Location: ' . $this->url('/dashboard'));
+            header('Location: ' . $this->url('/profile'));
             exit;
         }
 
@@ -49,8 +49,8 @@ class AuthController
 
             $user = $this->authService->login($email, $password, $remember);
 
-            // Redirect to intended page or dashboard
-            $redirectTo = $_GET['redirect'] ?? $this->url('/dashboard');
+            // Redirect to profile page to show user data after login
+            $redirectTo = $_GET['redirect'] ?? $this->url('/profile');
             $redirectTo = filter_var($redirectTo, FILTER_SANITIZE_URL);
             
             header('Location: ' . $redirectTo);
@@ -68,7 +68,7 @@ class AuthController
     {
         // Redirect if already authenticated
         if ($this->authService->isAuthenticated()) {
-            header('Location: ' . $this->url('/dashboard'));
+            header('Location: ' . $this->url('/profile'));
             exit;
         }
 
@@ -93,8 +93,8 @@ class AuthController
                 'role' => 'user' // Force user role for registration
             ]);
 
-            // Redirect to dashboard with success message
-            header('Location: ' . $this->url('/dashboard?welcome=1'));
+            // Redirect to profile page to show user data after registration
+            header('Location: ' . $this->url('/profile?welcome=1'));
             exit;
 
         } catch (AuthException $e) {
@@ -121,42 +121,15 @@ class AuthController
         exit;
     }
 
-    public function dashboard(): void
+
+    public function profile(): void
     {
         $user = AuthGuard::require();
         
         $welcomeMessage = null;
         if (isset($_GET['welcome'])) {
-            $welcomeMessage = 'Bienvenue ' . htmlspecialchars($user->getFirstName()) . ' !';
+            $welcomeMessage = 'Bienvenue ' . htmlspecialchars($user->getFirstName()) . ' ! Voici vos informations de profil.';
         }
-
-        $this->render('dashboard', [
-            'user' => $user,
-            'welcome_message' => $welcomeMessage
-        ]);
-    }
-
-    public function adminPanel(): void
-    {
-        $user = AuthGuard::requireAdmin();
-        
-        // Get user statistics (simple example)
-        $stats = [
-            'total_users' => 42, // This should come from UserRepository
-            'active_users' => 38,
-            'admin_users' => 3,
-            'new_registrations_today' => 2
-        ];
-
-        $this->render('admin/panel', [
-            'user' => $user,
-            'stats' => $stats
-        ]);
-    }
-
-    public function profile(): void
-    {
-        $user = AuthGuard::require();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Handle profile update
@@ -173,7 +146,10 @@ class AuthController
                 ]);
             }
         } else {
-            $this->render('profile', ['user' => $user]);
+            $this->render('profile', [
+                'user' => $user,
+                'welcome_message' => $welcomeMessage
+            ]);
         }
     }
 

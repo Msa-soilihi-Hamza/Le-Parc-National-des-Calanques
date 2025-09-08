@@ -30,5 +30,5 @@ Cette application permet la gestion complète d'un parc national incluant :
 ## Technologies utilisées
 
 - PHP
-- MySQL/MariaDB
+- MySQL/
 - Architecture MVC
