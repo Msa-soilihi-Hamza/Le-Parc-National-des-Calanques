@@ -1,3 +1,9 @@
+---
+name: notifications
+description: Use for notification system, email/SMS alerts, and communication features
+tools: Read, Write, Edit, Bash, Grep, Glob
+---
+
 # Agent Notifications
 
 ## Mission

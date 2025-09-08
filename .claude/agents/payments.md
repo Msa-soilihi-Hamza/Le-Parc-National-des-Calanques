@@ -1,3 +1,9 @@
+---
+name: payments
+description: Use for Stripe/PayPal integration, payment processing, and financial transactions
+tools: Read, Write, Edit, Bash, Grep, Glob
+---
+
 # Agent Paiements
 
 ## Mission

@@ -1,3 +1,9 @@
+---
+name: resources
+description: Use for fauna, flora, biodiversity management, and natural resources tracking
+tools: Read, Write, Edit, Bash, Grep, Glob
+---
+
 # Agent Ressources
 
 ## Mission

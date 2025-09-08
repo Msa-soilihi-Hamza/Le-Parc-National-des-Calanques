@@ -1,3 +1,9 @@
+---
+name: reservations
+description: Use for camping reservations, booking system, and availability management tasks
+tools: Read, Write, Edit, Bash, Grep, Glob
+---
+
 # Agent Réservations
 
 ## Mission

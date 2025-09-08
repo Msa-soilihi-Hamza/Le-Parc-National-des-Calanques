@@ -1,3 +1,9 @@
+---
+name: users
+description: Use for user CRUD operations, profiles, and role management tasks
+tools: Read, Write, Edit, Bash, Grep, Glob
+---
+
 # Agent Utilisateurs
 
 ## Mission

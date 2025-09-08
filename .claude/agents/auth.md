@@ -1,3 +1,9 @@
+---
+name: auth
+description: Use for JWT authentication, security, sessions, and authentication middleware tasks
+tools: Read, Write, Edit, Bash, Grep, Glob
+---
+
 # Agent Authentification
 
 ## Mission

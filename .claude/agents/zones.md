@@ -1,3 +1,9 @@
+---
+name: zones
+description: Use for park zones, trails, points of interest, and mapping tasks
+tools: Read, Write, Edit, Bash, Grep, Glob
+---
+
 # Agent Zones
 
 ## Mission
