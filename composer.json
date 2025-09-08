@@ -4,5 +4,15 @@
     },
     "require": {
         "firebase/php-jwt": "^6.11"
+    },
+    "autoload": {
+        "psr-4": {
+            "ParcCalanques\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
     }
 }
