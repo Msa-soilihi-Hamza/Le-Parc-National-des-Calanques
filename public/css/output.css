@@ -30,23 +30,23 @@
   --border-btn: 1px;
 }
 
-/* Thème Parc */
-[data-theme="parc"] {
-  --p: 219 84% 54%;
+/* Thème Cupcake */
+[data-theme="cupcake"] {
+  --p: 322 94% 68%;
   --pc: 0 0% 100%;
-  --s: 142 76% 36%;
+  --s: 158 94% 51%;
   --sc: 0 0% 100%;
-  --a: 24 70% 56%;
+  --a: 46 94% 68%;
   --ac: 0 0% 100%;
-  --n: 220 13% 18%;
-  --nc: 220 13% 69%;
+  --n: 240 33% 87%;
+  --nc: 0 0% 100%;
   --b1: 0 0% 100%;
-  --b2: 220 13% 95%;
-  --b3: 220 13% 90%;
-  --bc: 220 13% 18%;
+  --b2: 240 33% 97%;
+  --b3: 240 33% 94%;
+  --bc: 240 33% 13%;
   --in: 198 93% 60%;
   --su: 158 64% 52%;
-  --wa: 43 96% 56%;
+  --wa: 43 94% 68%;
   --er: 0 91% 71%;
   --erc: 0 0% 100%;
 }
@@ -366,6 +366,80 @@
   100% {
     transform: scale(1);
   }
+}
+
+/* Custom Navbar fixes */
+.navbar {
+  min-height: 4rem;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  background-color: hsl(var(--b1));
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.navbar-start {
+  flex: 0 1 auto;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-center {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar-end {
+  flex: 0 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.navbar .menu {
+  gap: 0.5rem;
+}
+
+.navbar .dropdown {
+  z-index: 1001;
+}
+
+/* Fix pour éviter les navbars multiples */
+body > nav:not(#parc-navbar) {
+  display: none !important;
+}
+
+/* Classes utilitaires pour la navbar */
+.menu-horizontal {
+  display: flex;
+  flex-direction: row;
+}
+
+.menu-horizontal > li {
+  display: flex;
+  align-items: center;
+}
+
+.menu-horizontal > li > a {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.btn-ghost {
+  background-color: transparent;
+  border: 1px solid transparent;
+}
+
+.btn-ghost:hover {
+  background-color: hsl(var(--b2));
 }
 
 /* Tailwind Utilities */

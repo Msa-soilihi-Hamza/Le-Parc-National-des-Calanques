@@ -1,27 +1,26 @@
+<?php
+// Inclusion des composants
+require_once __DIR__ . '/components/Navbar.php';
+
+// Simulation d'un utilisateur connecté (en réalité, ces données viendraient de la session)
+$isLoggedIn = true;
+$userRole = 'user'; // ou 'admin'
+$userName = 'John Doe';
+$userEmail = 'john@example.com';
+?>
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="cupcake">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon Profil - Parc National des Calanques</title>
-    <link href="<?= $GLOBALS['basePath'] ?? '' ?>/public/css/output.css" rel="stylesheet">
+    <link href="/Le-Parc-National-des-Calanques/public/css/output.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100 font-sans leading-relaxed">
-    <header class="bg-blue-800 text-white py-4 px-8 shadow-md">
-        <div class="max-w-6xl mx-auto flex justify-between items-center">
-            <div class="text-2xl font-bold">🏞️ Parc des Calanques</div>
-            <nav class="flex items-center gap-8">
-                <a href="<?= $GLOBALS['basePath'] ?? '' ?>/profile" class="text-white hover:opacity-80 transition-opacity">Profil</a>
-                <div class="bg-white bg-opacity-10 px-4 py-2 rounded-md">
-                    <?= htmlspecialchars($user->getFullName()) ?>
-                    (<?= htmlspecialchars($user->getRole()) ?>)
-                </div>
-                <a href="<?= $GLOBALS['basePath'] ?? '' ?>/logout" class="text-white hover:opacity-80 transition-opacity">Déconnexion</a>
-            </nav>
-        </div>
-    </header>
+<body class="bg-base-200 font-sans leading-relaxed">
+    <!-- Navbar avec utilisateur connecté -->
+    <?= renderParcNavbar($isLoggedIn, $userRole, '', $userName) ?>
 
-    <main class="max-w-4xl mx-auto py-8 px-4">
+    <main class="max-w-4xl mx-auto py-8 px-4 mt-4">
         <?php if (isset($welcome_message)): ?>
             <div class="bg-green-100 border border-green-200 text-green-800 px-4 py-3 rounded-md mb-4">
                 <?= htmlspecialchars($welcome_message) ?>

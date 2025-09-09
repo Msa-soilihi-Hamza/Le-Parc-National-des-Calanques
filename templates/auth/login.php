@@ -4,17 +4,21 @@ require_once __DIR__ . '/../components/Button.php';
 require_once __DIR__ . '/../components/GoogleButton.php';
 require_once __DIR__ . '/../components/Badge.php';
 require_once __DIR__ . '/../components/Avatar.php';
+require_once __DIR__ . '/../components/Navbar.php';
 ?>
 <!DOCTYPE html>
-<html lang="fr" data-theme="parc">
+<html lang="fr" data-theme="cupcake">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connexion - Parc National des Calanques</title>
     <link href="/Le-Parc-National-des-Calanques/public/css/output.css" rel="stylesheet">
 </head>
-<body class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-    <div class="min-h-screen flex items-center justify-center px-4 py-12">
+<body class="bg-base-200">
+    <!-- Navbar -->
+    <?= renderParcNavbar(false) ?>
+    
+    <div class="flex items-center justify-center px-4 py-12" style="min-height: calc(100vh - 4rem);">
         <div class="max-w-md w-full">
             
             <!-- Formulaire de connexion -->

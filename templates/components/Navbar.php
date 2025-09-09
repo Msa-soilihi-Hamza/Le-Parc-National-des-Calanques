@@ -151,35 +151,87 @@ function renderSimpleNavbar($brandText = 'Mon Site', $brandUrl = '#', $userMenu 
 }
 
 /**
- * Navbar pour le projet Parc National des Calanques
+ * Navbar pour le projet Parc National des Calanques avec gestion d'état
  */
-function renderParcNavbar($userRole = 'visitor', $avatarSrc = '', $attributes = []) {
-    $brandText = 'Parc des Calanques';
-    $brandUrl = '/';
+function renderParcNavbar($isLoggedIn = false, $userRole = 'visitor', $avatarSrc = '', $userName = '', $attributes = []) {
+    $brandText = '🏔️ Parc des Calanques';
+    $brandUrl = '/Le-Parc-National-des-Calanques/';
     
-    // Menu selon le rôle
-    $userMenus = [
-        'admin' => [
-            ['text' => 'Tableau de bord', 'url' => '/admin/dashboard'],
-            ['text' => 'Gestion zones', 'url' => '/admin/zones'],
-            ['text' => 'Réservations', 'url' => '/admin/reservations'],
-            ['text' => 'Profil', 'url' => '/profile'],
-            ['text' => 'Déconnexion', 'url' => '/logout']
-        ],
-        'user' => [
-            ['text' => 'Mes réservations', 'url' => '/reservations'],
-            ['text' => 'Profil', 'url' => '/profile'],
-            ['text' => 'Paramètres', 'url' => '/settings'],
-            ['text' => 'Déconnexion', 'url' => '/logout']
-        ],
-        'visitor' => [
-            ['text' => 'Connexion', 'url' => '/login'],
-            ['text' => 'Inscription', 'url' => '/register']
-        ]
-    ];
+    // Traitement des attributs supplémentaires
+    $attrs = '';
+    foreach ($attributes as $key => $value) {
+        $attrs .= ' ' . $key . '="' . htmlspecialchars($value) . '"';
+    }
     
-    $menu = isset($userMenus[$userRole]) ? $userMenus[$userRole] : $userMenus['visitor'];
+    $html = '<nav id="parc-navbar" class="navbar"' . $attrs . '>
+        <div class="navbar-start">
+            <a href="' . htmlspecialchars($brandUrl) . '" class="btn btn-ghost text-xl font-bold text-primary">
+                ' . htmlspecialchars($brandText) . '
+            </a>
+        </div>
+        
+       
+        
+        <div class="navbar-end">';
     
-    return renderSimpleNavbar($brandText, $brandUrl, $menu, $avatarSrc, $attributes);
+    if (!$isLoggedIn) {
+        // Utilisateur non connecté - Boutons Connexion/Inscription
+        $html .= '
+            <a href="/Le-Parc-National-des-Calanques/login" class="btn btn-ghost btn-sm">
+                Connexion
+            </a>
+            <a href="/Le-Parc-National-des-Calanques/register" class="btn btn-primary btn-sm">
+                S\'inscrire
+            </a>';
+    } else {
+        // Utilisateur connecté - Menu dropdown avec avatar
+        $html .= '
+            <div class="dropdown dropdown-end">
+                <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+                    <div class="w-10 rounded-full">';
+        
+        if (!empty($avatarSrc)) {
+            $html .= '<img alt="Avatar" src="' . htmlspecialchars($avatarSrc) . '" />';
+        } else {
+            $initials = !empty($userName) ? strtoupper(substr($userName, 0, 2)) : 'UI';
+            $html .= '<div class="bg-primary text-primary-content w-10 h-10 rounded-full flex items-center justify-center">
+                        <span class="text-sm font-medium">' . htmlspecialchars($initials) . '</span>
+                      </div>';
+        }
+        
+        $html .= '</div>
+                </div>
+                <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow-lg border border-base-300">';
+        
+        // Menu selon le rôle
+        if ($userRole === 'admin') {
+            $html .= '
+                <li><a href="/Le-Parc-National-des-Calanques/admin/dashboard" class="justify-between">
+                    <span>🏠 Tableau de bord</span>
+                </a></li>
+                <li><a href="/Le-Parc-National-des-Calanques/admin/zones">🗺️ Gestion zones</a></li>
+                <li><a href="/Le-Parc-National-des-Calanques/admin/reservations">🏕️ Réservations</a></li>
+                <div class="divider my-1"></div>';
+        } else {
+            $html .= '
+                <li><a href="/Le-Parc-National-des-Calanques/reservations">🏕️ Mes réservations</a></li>
+                <div class="divider my-1"></div>';
+        }
+        
+        $html .= '
+                <li><a href="/Le-Parc-National-des-Calanques/profile">👤 Profil</a></li>
+                <li><a href="/Le-Parc-National-des-Calanques/settings">⚙️ Paramètres</a></li>
+                <div class="divider my-1"></div>
+                <li><a href="/Le-Parc-National-des-Calanques/logout" class="text-error">🚪 Déconnexion</a></li>
+            </ul>
+            </div>';
+    }
+    
+    
+    $html .= '
+        
+    </nav>';
+    
+    return $html;
 }
 ?>
