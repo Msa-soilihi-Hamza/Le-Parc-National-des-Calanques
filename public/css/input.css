@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Styles personnalisés pour le Parc National des Calanques */
+@layer components {
+  .btn-primary {
+    @apply bg-parc-blue hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md transition duration-200;
+  }
+  
+  .btn-secondary {
+    @apply bg-parc-green hover:bg-green-600 text-white font-medium py-2 px-4 rounded-md transition duration-200;
+  }
+  
+  .btn-warning {
+    @apply bg-parc-orange hover:bg-orange-600 text-white font-medium py-2 px-4 rounded-md transition duration-200;
+  }
+  
+  .card {
+    @apply bg-white shadow-lg rounded-lg p-6 border border-gray-200;
+  }
+  
+  .form-input {
+    @apply w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-parc-blue focus:border-transparent;
+  }
+  
+  .form-label {
+    @apply block text-sm font-medium text-gray-700 mb-2;
+  }
+}

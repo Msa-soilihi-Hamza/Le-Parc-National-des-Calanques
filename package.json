@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "@tailwindcss/vite": "^4.1.13",
+    "tailwindcss": "^4.1.13"
+  },
+  "scripts": {
+    "build-css": "tailwindcss -i ./public/css/input.css -o ./public/css/output.css --watch",
+    "build-css-prod": "tailwindcss -i ./public/css/input.css -o ./public/css/output.css --minify"
+  },
+  "devDependencies": {
+    "daisyui": "^5.1.9"
+  }
+}
