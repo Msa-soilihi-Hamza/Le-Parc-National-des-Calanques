@@ -93,23 +93,23 @@ try {
             // 404 Not Found
             http_response_code(404);
             echo "<!DOCTYPE html>
-            <html>
+            <html lang='fr' data-theme='parc'>
             <head>
                 <title>Page non trouvée</title>
                 <meta charset='utf-8'>
-                <style>
-                    body { font-family: Arial, sans-serif; text-align: center; margin-top: 100px; }
-                    .error-container { max-width: 600px; margin: 0 auto; }
-                    .error-code { font-size: 72px; color: #e74c3c; }
-                    .error-message { font-size: 24px; color: #333; margin: 20px 0; }
-                    .back-link { color: #3498db; text-decoration: none; }
-                </style>
+                <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+                <link href='" . url('/public/css/output.css') . "' rel='stylesheet'>
             </head>
-            <body>
-                <div class='error-container'>
-                    <div class='error-code'>404</div>
-                    <div class='error-message'>Page non trouvée</div>
-                    <a href='/' class='back-link'>Retour à l'accueil</a>
+            <body class='bg-base-100 min-h-screen font-sans'>
+                <div class='hero min-h-screen bg-base-200'>
+                    <div class='hero-content text-center'>
+                        <div class='max-w-md'>
+                            <h1 class='text-9xl font-bold text-error'>404</h1>
+                            <p class='text-2xl font-semibold text-base-content py-6'>Page non trouvée</p>
+                            <p class='text-base-content/70 mb-8'>Désolé, la page que vous recherchez n'existe pas.</p>
+                            <a href='" . url('/') . "' class='btn btn-primary'>Retour à l'accueil</a>
+                        </div>
+                    </div>
                 </div>
             </body>
             </html>";
@@ -122,32 +122,32 @@ try {
     
     http_response_code(500);
     echo "<!DOCTYPE html>
-    <html>
+    <html lang='fr' data-theme='parc'>
     <head>
         <title>Erreur serveur</title>
         <meta charset='utf-8'>
-        <style>
-            body { font-family: Arial, sans-serif; text-align: center; margin-top: 100px; }
-            .error-container { max-width: 600px; margin: 0 auto; }
-            .error-code { font-size: 72px; color: #e74c3c; }
-            .error-message { font-size: 24px; color: #333; margin: 20px 0; }
-            .error-details { background: #f8f9fa; padding: 20px; border-radius: 5px; margin: 20px 0; text-align: left; }
-            .back-link { color: #3498db; text-decoration: none; }
-        </style>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <link href='" . url('/public/css/output.css') . "' rel='stylesheet'>
     </head>
-    <body>
-        <div class='error-container'>
-            <div class='error-code'>500</div>
-            <div class='error-message'>Erreur interne du serveur</div>";
+    <body class='bg-base-100 min-h-screen font-sans'>
+        <div class='hero min-h-screen bg-base-200'>
+            <div class='hero-content text-center'>
+                <div class='max-w-2xl'>
+                    <h1 class='text-9xl font-bold text-error'>500</h1>
+                    <p class='text-2xl font-semibold text-base-content py-6'>Erreur interne du serveur</p>
+                    <p class='text-base-content/70 mb-8'>Une erreur inattendue s'est produite. Veuillez réessayer plus tard.</p>";
     
     if (ini_get('display_errors')) {
-        echo "<div class='error-details'>
-                <strong>Message:</strong> " . htmlspecialchars($e->getMessage()) . "<br>
-                <strong>File:</strong> " . htmlspecialchars($e->getFile()) . ":" . $e->getLine() . "
+        echo "<div class='card bg-base-100 shadow-lg p-6 mb-8 text-left'>
+                <h3 class='font-bold text-lg mb-4'>Détails de l'erreur :</h3>
+                <p class='mb-2'><strong>Message:</strong> " . htmlspecialchars($e->getMessage()) . "</p>
+                <p><strong>Fichier:</strong> " . htmlspecialchars($e->getFile()) . ":" . $e->getLine() . "</p>
               </div>";
     }
     
-    echo "    <a href='/' class='back-link'>Retour à l'accueil</a>
+    echo "          <a href='" . url('/') . "' class='btn btn-primary'>Retour à l'accueil</a>
+                </div>
+            </div>
         </div>
     </body>
     </html>";
