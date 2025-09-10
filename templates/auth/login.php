@@ -14,7 +14,7 @@ require_once __DIR__ . '/../components/Navbar.php';
     <title>Connexion - Parc National des Calanques</title>
     <link href="/Le-Parc-National-des-Calanques/public/css/output.css" rel="stylesheet">
 </head>
-<body class="bg-base-200">
+<body class="bg-white">
     <!-- Navbar -->
     <?= renderParcNavbar(false) ?>
     
@@ -63,7 +63,7 @@ require_once __DIR__ . '/../components/Navbar.php';
                                 required 
                                 autocomplete="email"
                                 placeholder="votre@email.com"
-                                class="input input-bordered w-full focus:input-primary"
+                                class="w-full border border-gray-300 rounded-lg px-4 py-6 text-blue-900 h-16 text-xl bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-200 placeholder-blue-300"
                             >
                         </div>
 
@@ -78,7 +78,7 @@ require_once __DIR__ . '/../components/Navbar.php';
                                 required 
                                 autocomplete="current-password"
                                 placeholder="Votre mot de passe"
-                                class="input input-bordered w-full focus:input-primary"
+                                class="w-full border border-gray-300 rounded-lg px-4 py-6 text-blue-900 h-16 text-xl bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-200 placeholder-blue-300"
                             >
                         </div>
 
@@ -140,14 +140,16 @@ require_once __DIR__ . '/../components/Navbar.php';
     <script>
         function fillLoginForm(email, password) {
             // Remplir les champs du formulaire
-            document.getElementById('email').value = email;
-            document.getElementById('password').value = password;
-            
-            // Animation visuelle pour montrer que les champs sont remplis
             const emailField = document.getElementById('email');
             const passwordField = document.getElementById('password');
             
-            // Ajouter une classe pour l'animation
+            emailField.value = email;
+            passwordField.value = password;
+            
+            // Forcer le style blanc même après remplissage
+            forceWhiteBackground();
+            
+            // Animation visuelle pour montrer que les champs sont remplis
             emailField.classList.add('input-success');
             passwordField.classList.add('input-success');
             
@@ -157,14 +159,39 @@ require_once __DIR__ . '/../components/Navbar.php';
                 passwordField.classList.remove('input-success');
             }, 1000);
         }
+        
+        function forceWhiteBackground() {
+            const emailField = document.getElementById('email');
+            const passwordField = document.getElementById('password');
+            
+            // Force le style directement sur les éléments
+            if (emailField) {
+                emailField.style.backgroundColor = 'white';
+                emailField.style.color = '#1e3a8a';
+            }
+            if (passwordField) {
+                passwordField.style.backgroundColor = 'white';
+                passwordField.style.color = '#1e3a8a';
+            }
+        }
+        
+        // Force le style au chargement de la page et à chaque changement
+        document.addEventListener('DOMContentLoaded', function() {
+            forceWhiteBackground();
+            
+            // Écouter les événements sur les champs
+            const emailField = document.getElementById('email');
+            const passwordField = document.getElementById('password');
+            
+            [emailField, passwordField].forEach(field => {
+                if (field) {
+                    ['input', 'change', 'focus', 'blur', 'keyup'].forEach(event => {
+                        field.addEventListener(event, forceWhiteBackground);
+                    });
+                }
+            });
+        });
     </script>
 
-    <style>
-        .input-success {
-            border-color: #10b981 !important;
-            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2) !important;
-            transition: all 0.3s ease !important;
-        }
-    </style>
 </body>
 </html>
