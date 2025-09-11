@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/react/*"],
+      "@/components/*": ["./src/react/components/*"],
+      "@/lib/*": ["./src/react/lib/*"],
+      "@/utils": ["./src/react/lib/utils"]
+    }
+  },
+  "include": [
+    "src/react/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

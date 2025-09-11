@@ -46,10 +46,18 @@ try {
             exit;
 
         case '/login':
+            // Version React uniquement
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $authController->login();
+                $authController->login(); // Garde la même logique de connexion
             } else {
-                $authController->showLogin();
+                // Affiche la version React
+                $basePath = dirname($_SERVER['SCRIPT_NAME']);
+                if ($basePath === '/') {
+                    $basePath = '';
+                }
+                $GLOBALS['basePath'] = $basePath;
+                
+                include 'templates/auth/login.php';
             }
             break;
 
@@ -67,7 +75,18 @@ try {
 
 
         case '/profile':
-            $authController->profile();
+            // Version React uniquement
+            if (!AuthGuard::check()) {
+                header('Location: ' . url('/login'));
+                exit;
+            }
+            
+            $user = AuthGuard::user();
+            $isLoggedIn = true;
+            $userRole = $user->getRole();
+            $userName = $user->getFullName();
+            
+            include 'templates/profile.php';
             break;
 
         case '/api/auth/check':
