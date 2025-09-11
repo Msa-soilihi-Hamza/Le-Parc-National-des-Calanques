@@ -29,11 +29,12 @@ const App = () => {
 
   const handleLogout = async () => {
     try {
-      await api.post('/auth/logout');
+      await api.logout();  // ← Utilise la méthode logout() qui supprime le token
       setUser(null);
     } catch (error) {
       console.error('Erreur lors de la déconnexion:', error);
-      // Déconnexion forcée même en cas d'erreur
+      // Déconnexion forcée même en cas d'erreur - supprimer le token quand même
+      api.setToken(null);
       setUser(null);
     }
   };
