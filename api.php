@@ -34,6 +34,15 @@ try {
     }
     $path = strtok($requestUri, '?');
     
+    // Si le path commence par /api.php, on l'enlève pour garder seulement la route API
+    if (strpos($path, '/api.php') === 0) {
+        $path = substr($path, strlen('/api.php'));
+        // Ajouter /api au début si ce n'est pas déjà présent
+        if (strpos($path, '/api') !== 0) {
+            $path = '/api' . $path;
+        }
+    }
+    
     // Route the API requests
     switch ($path) {
         case '/api/auth/login':

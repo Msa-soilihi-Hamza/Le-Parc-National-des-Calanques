@@ -1,27 +1,30 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import api from "../services/api.js";
 
-const LoginForm = ({ onSubmit, error, success, basePath = '' }) => {
+const LoginForm = ({ onSuccess }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [remember, setRemember] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError(null);
     
     try {
-      if (onSubmit) {
-        await onSubmit({ email, password, remember });
-      } else {
-        // Fallback vers soumission PHP classique
-        const form = e.target;
-        form.submit();
+      const response = await api.login(email, password);
+      console.log('Login success:', response);
+      
+      if (onSuccess) {
+        onSuccess(response.user || response);
       }
     } catch (err) {
       console.error('Erreur de connexion:', err);
+      setError(err.message || 'Erreur de connexion');
     } finally {
       setLoading(false);
     }
@@ -54,17 +57,9 @@ const LoginForm = ({ onSubmit, error, success, basePath = '' }) => {
               </div>
             )}
 
-            {success && (
-              <div className="alert alert-success mb-6">
-                <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <span>{success}</span>
-              </div>
-            )}
 
             {/* Formulaire */}
-            <form onSubmit={handleSubmit} method="POST" action={`${basePath}/login`} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div className="form-control">
                 <label className="label" htmlFor="email">
                   <span className="label-text font-medium">Adresse email</span>
@@ -150,19 +145,10 @@ const LoginForm = ({ onSubmit, error, success, basePath = '' }) => {
                   type="button" 
                   variant="outline"
                   size="sm"
-                  className="border-red-300 text-red-700 hover:bg-red-50"
-                  onClick={() => fillLoginForm('admin@calanques.fr', 'admin123')}
+                  className="border-green-300 text-green-700 hover:bg-green-50"
+                  onClick={() => fillLoginForm('hamza@hamza.fr', 'Hamza 123')}
                 >
-                  Admin
-                </Button>
-                <Button 
-                  type="button" 
-                  variant="outline"
-                  size="sm"
-                  className="border-blue-300 text-blue-700 hover:bg-blue-50"
-                  onClick={() => fillLoginForm('user@calanques.fr', 'user123')}
-                >
-                  Utilisateur
+                  Test Hamza
                 </Button>
               </div>
             </div>
@@ -170,13 +156,13 @@ const LoginForm = ({ onSubmit, error, success, basePath = '' }) => {
             {/* Liens */}
             <div className="text-center space-y-2 text-sm">
               <p>
-                <a href={`${basePath}/forgot-password`} className="link link-primary">
+                <a href="#" className="link link-primary">
                   Mot de passe oublié ?
                 </a>
               </p>
               <p className="text-gray-600">
                 Pas encore de compte ? 
-                <a href={`${basePath}/register`} className="link link-primary font-medium ml-1">
+                <a href="#" className="link link-primary font-medium ml-1">
                   S'inscrire
                 </a>
               </p>

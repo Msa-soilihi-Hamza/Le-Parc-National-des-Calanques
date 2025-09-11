@@ -28,7 +28,10 @@ class AuthBootstrap
             // Initialize repositories and services
             self::$userRepository = new UserRepository($pdo);
             $sessionManager = new SessionManager(self::$userRepository);
-            self::$jwtService = new JwtService();
+            
+            // Use a fixed secret key for JWT (should be from environment in production)
+            $jwtSecret = $_ENV['JWT_SECRET'] ?? 'parc-calanques-secret-key-2025-dev-mode-change-in-production';
+            self::$jwtService = new JwtService($jwtSecret);
             self::$authService = new AuthService(self::$userRepository, $sessionManager, self::$jwtService);
 
             // Initialize AuthGuard
