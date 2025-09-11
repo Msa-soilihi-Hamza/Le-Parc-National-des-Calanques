@@ -53,10 +53,10 @@ class ApiService {
   }
 
   // Authentification
-  async login(email, password) {
+  async login(email, password, remember = false) {
     const response = await this.request('/auth/login', {
       method: 'POST',
-      body: JSON.stringify({ email, password })
+      body: JSON.stringify({ email, password, remember })
     });
     
     // Stocker le token après connexion réussie

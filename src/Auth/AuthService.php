@@ -43,7 +43,7 @@ class AuthService
         return $user;
     }
 
-    public function loginWithJwt(string $email, string $password): array
+    public function loginWithJwt(string $email, string $password, bool $remember = false): array
     {
         if (!$this->jwtService) {
             throw new AuthException('JWT service not available');
@@ -61,6 +61,11 @@ class AuthService
 
         if (!$user->verifyPassword($password)) {
             throw new AuthException(AuthException::INVALID_CREDENTIALS);
+        }
+
+        // Créer un remember token si demandé
+        if ($remember) {
+            $this->createRememberToken($user);
         }
 
         $tokens = $this->jwtService->generateTokenPair($user);

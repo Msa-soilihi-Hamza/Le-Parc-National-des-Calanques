@@ -28,7 +28,9 @@ class ApiController
         }
 
         try {
-            $result = $this->authService->loginWithJwt($input['email'], $input['password']);
+            // Récupérer le paramètre remember (optionnel)
+            $remember = (bool) ($input['remember'] ?? false);
+            $result = $this->authService->loginWithJwt($input['email'], $input['password'], $remember);
             
             $this->jwtMiddleware->sendJsonResponse([
                 'success' => true,

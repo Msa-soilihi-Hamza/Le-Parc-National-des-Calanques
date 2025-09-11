@@ -16,7 +16,7 @@ const LoginForm = ({ onSuccess }) => {
     setError(null);
     
     try {
-      const response = await api.login(email, password);
+      const response = await api.login(email, password, remember);
       console.log('Login success:', response);
       
       if (onSuccess) {
