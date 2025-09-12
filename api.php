@@ -69,6 +69,12 @@ try {
             }
             break;
 
+        case '/api/auth/register':
+            if ($requestMethod === 'POST') {
+                $apiController->register();
+            }
+            break;
+
         case '/api/auth/validate':
             if ($requestMethod === 'POST') {
                 $apiController->validateToken();

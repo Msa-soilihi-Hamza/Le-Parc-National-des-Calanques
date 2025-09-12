@@ -14,7 +14,7 @@ const GalleryVerticalEndIcon = ({ className = "size-4" }) => (
   </svg>
 );
 
-const LoginForm = ({ onSuccess }) => {
+const LoginForm = ({ onSuccess, onSwitchToSignup }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [remember, setRemember] = useState(false);
@@ -121,6 +121,8 @@ const LoginForm = ({ onSuccess }) => {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="m@example.com"
+                      className="input-white"
+                      autoComplete="email"
                       required
                     />
                   </div>
@@ -140,10 +142,12 @@ const LoginForm = ({ onSuccess }) => {
                       type="password" 
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
+                      className="input-white"
+                      autoComplete="current-password"
                       required 
                     />
                   </div>
-                  <Button type="submit" className="w-full" disabled={loading}>
+                  <Button type="submit" className="w-full btn-login" disabled={loading}>
                     {loading ? 'Connexion en cours...' : 'Connexion'}
                   </Button>
                 </div>
@@ -151,9 +155,13 @@ const LoginForm = ({ onSuccess }) => {
                 {/* Lien inscription */}
                 <div className="text-center text-sm">
                   Vous n&apos;avez pas de compte ?{" "}
-                  <a href="#" className="underline underline-offset-4">
+                  <button
+                    type="button"
+                    onClick={onSwitchToSignup}
+                    className="underline underline-offset-4 hover:text-primary font-medium"
+                  >
                     S&apos;inscrire
-                  </a>
+                  </button>
                 </div>
               </div>
             </form>

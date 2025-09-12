@@ -74,6 +74,38 @@
     background-color: #1d4ed8;
   }
   
+  /* Bouton de connexion bleu clair */
+  .btn-login {
+    background-color: #60a5fa !important; /* bleu clair */
+    color: white !important;
+  }
+  
+  .btn-login:hover {
+    background-color: #3b82f6 !important; /* bleu légèrement plus foncé au hover */
+  }
+  
+  /* Fix pour les inputs - forcer le background blanc */
+  .input-white {
+    background-color: white !important;
+    color: #374151 !important; /* gris foncé pour le texte */
+  }
+  
+  /* Fix spécifique pour l'autocomplete Chrome/Edge */
+  .input-white:-webkit-autofill,
+  .input-white:-webkit-autofill:hover,
+  .input-white:-webkit-autofill:focus,
+  .input-white:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+    -webkit-text-fill-color: #374151 !important;
+    background-color: white !important;
+  }
+  
+  /* Fix pour Firefox */
+  .input-white:-moz-autofill {
+    background-color: white !important;
+    color: #374151 !important;
+  }
+  
   .card {
     background-color: white;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);

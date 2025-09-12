@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import LoginForm from './components/LoginForm.jsx';
+import SignupPage from './components/SignupPage.jsx';
 import UserProfile from './components/UserProfile.jsx';
 import api from './services/api.js';
 
 const App = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showSignup, setShowSignup] = useState(false);
 
   useEffect(() => {
     checkAuth();
@@ -25,6 +27,12 @@ const App = () => {
 
   const handleLogin = (userData) => {
     setUser(userData);
+    setShowSignup(false);
+  };
+
+  const handleSignup = (userData) => {
+    setUser(userData);
+    setShowSignup(false);
   };
 
   const handleLogout = async () => {
@@ -38,6 +46,9 @@ const App = () => {
       setUser(null);
     }
   };
+
+  const switchToLogin = () => setShowSignup(false);
+  const switchToSignup = () => setShowSignup(true);
 
   if (loading) {
     return (
@@ -72,11 +83,21 @@ const App = () => {
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-8">
+      <main>
         {user ? (
-          <UserProfile user={user} onUpdate={setUser} />
+          <div className="container mx-auto px-4 py-8">
+            <UserProfile user={user} onUpdate={setUser} />
+          </div>
+        ) : showSignup ? (
+          <SignupPage 
+            onSuccess={handleSignup}
+            onSwitchToLogin={switchToLogin}
+          />
         ) : (
-          <LoginForm onSuccess={handleLogin} />
+          <LoginForm 
+            onSuccess={handleLogin} 
+            onSwitchToSignup={switchToSignup}
+          />
         )}
       </main>
     </div>

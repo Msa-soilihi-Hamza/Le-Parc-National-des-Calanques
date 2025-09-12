@@ -87,6 +87,39 @@ class AuthApiController
     }
 
     /**
+     * POST /api/auth/register
+     */
+    public function register(): void
+    {
+        $data = Request::getJsonInput();
+        
+        Request::validate($data, [
+            'nom' => 'required|min:2|max:50',
+            'prenom' => 'required|min:2|max:50',
+            'email' => 'required|email',
+            'password' => 'required|min:6'
+        ]);
+
+        try {
+            $result = $this->authService->registerWithJwt(
+                $data['nom'],
+                $data['prenom'],
+                $data['email'],
+                $data['password']
+            );
+            
+            ApiResponse::success([
+                'message' => 'Registration successful',
+                'user' => $result['user'],
+                'tokens' => $result['tokens']
+            ]);
+
+        } catch (AuthException $e) {
+            ApiResponse::error($e->getMessage(), 400);
+        }
+    }
+
+    /**
      * POST /api/auth/logout
      */
     public function logout(): void

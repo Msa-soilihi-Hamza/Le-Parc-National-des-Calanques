@@ -137,6 +137,32 @@ class AuthService
         return $user;
     }
 
+    public function registerWithJwt(string $nom, string $prenom, string $email, string $password): array
+    {
+        if (!$this->jwtService) {
+            throw new AuthException('JWT service not available');
+        }
+
+        $userData = [
+            'first_name' => $prenom,
+            'last_name' => $nom,
+            'email' => $email,
+            'password' => $password
+        ];
+
+        if ($this->userRepository->emailExists($email)) {
+            throw new AuthException('Email address already exists');
+        }
+
+        $user = $this->userRepository->create($userData);
+        $tokens = $this->jwtService->generateTokenPair($user);
+
+        return [
+            'user' => $user->toArray(),
+            'tokens' => $tokens
+        ];
+    }
+
     public function getCurrentUser(): ?User
     {
         return $this->sessionManager->getCurrentUser();

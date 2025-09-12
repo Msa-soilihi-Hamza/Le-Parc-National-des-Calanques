@@ -74,6 +74,20 @@ class ApiService {
     });
   }
 
+  async signup(userData) {
+    const response = await this.request('/auth/register', {
+      method: 'POST',
+      body: JSON.stringify(userData)
+    });
+    
+    // Stocker le token après inscription réussie si fourni
+    if (response.tokens && response.tokens.access_token) {
+      this.setToken(response.tokens.access_token);
+    }
+    
+    return response;
+  }
+
   async logout() {
     const response = await this.request('/auth/logout', {
       method: 'POST'

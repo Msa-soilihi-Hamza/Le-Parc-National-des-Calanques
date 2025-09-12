@@ -95,6 +95,36 @@ class ApiController
         ]);
     }
 
+    public function register(): void
+    {
+        $this->jwtMiddleware->validateApiRequest();
+
+        $input = json_decode(file_get_contents('php://input'), true);
+
+        if (empty($input['nom']) || empty($input['prenom']) || empty($input['email']) || empty($input['password'])) {
+            $this->jwtMiddleware->sendJsonError('Nom, prénom, email and password are required', 400);
+        }
+
+        try {
+            $result = $this->authService->registerWithJwt(
+                $input['nom'],
+                $input['prenom'],
+                $input['email'],
+                $input['password']
+            );
+            
+            $this->jwtMiddleware->sendJsonResponse([
+                'success' => true,
+                'message' => 'Registration successful',
+                'user' => $result['user'],
+                'tokens' => $result['tokens']
+            ]);
+
+        } catch (AuthException $e) {
+            $this->jwtMiddleware->sendJsonError($e->getMessage(), 400);
+        }
+    }
+
     public function validateToken(): void
     {
         $this->jwtMiddleware->validateApiRequest();
