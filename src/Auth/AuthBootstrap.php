@@ -6,6 +6,7 @@ namespace ParcCalanques\Auth;
 
 use Database;
 use ParcCalanques\Models\UserRepository;
+use ParcCalanques\Services\EmailService;
 
 class AuthBootstrap
 {
@@ -32,7 +33,16 @@ class AuthBootstrap
             // Use a fixed secret key for JWT (should be from environment in production)
             $jwtSecret = $_ENV['JWT_SECRET'] ?? 'parc-calanques-secret-key-2025-dev-mode-change-in-production';
             self::$jwtService = new JwtService($jwtSecret);
-            self::$authService = new AuthService(self::$userRepository, $sessionManager, self::$jwtService);
+            
+            // Initialize EmailService for verification emails
+            $emailService = null;
+            try {
+                $emailService = new EmailService();
+            } catch (\Exception $e) {
+                error_log("Failed to initialize EmailService: " . $e->getMessage());
+            }
+            
+            self::$authService = new AuthService(self::$userRepository, $sessionManager, self::$jwtService, $emailService);
 
             // Initialize AuthGuard
             AuthGuard::init(self::$authService);

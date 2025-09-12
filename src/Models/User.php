@@ -25,7 +25,10 @@ class User
         private ?DateTime $updatedAt = null,
         private bool $abonnement = false,
         private ?string $carteMembreNumero = null,
-        private ?DateTime $carteMembreDateValidite = null
+        private ?DateTime $carteMembreDateValidite = null,
+        private bool $emailVerified = false,
+        private ?string $emailVerificationToken = null,
+        private ?DateTime $emailVerificationExpiresAt = null
     ) {}
 
     public function getId(): int
@@ -156,6 +159,21 @@ class User
         return $this->carteMembreDateValidite > new DateTime();
     }
 
+    public function getEmailVerificationToken(): ?string
+    {
+        return $this->emailVerificationToken;
+    }
+
+    public function getEmailVerificationExpiresAt(): ?DateTime
+    {
+        return $this->emailVerificationExpiresAt;
+    }
+
+    public function isEmailVerifiedByToken(): bool
+    {
+        return $this->emailVerified;
+    }
+
     public function toArray(): array
     {
         return [
@@ -173,7 +191,10 @@ class User
             'abonnement' => $this->abonnement,
             'carte_membre_numero' => $this->carteMembreNumero,
             'carte_membre_date_validite' => $this->carteMembreDateValidite?->format('Y-m-d'),
-            'carte_membre_valide' => $this->isCarteMembreValide()
+            'carte_membre_valide' => $this->isCarteMembreValide(),
+            'email_verified' => $this->emailVerified,
+            'email_verification_token' => $this->emailVerificationToken,
+            'email_verification_expires_at' => $this->emailVerificationExpiresAt?->format('Y-m-d H:i:s')
         ];
     }
 }

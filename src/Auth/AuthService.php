@@ -7,6 +7,7 @@ namespace ParcCalanques\Auth;
 use ParcCalanques\Models\User;
 use ParcCalanques\Models\UserRepository;
 use ParcCalanques\Exceptions\AuthException;
+use ParcCalanques\Services\EmailService;
 
 class AuthService
 {
@@ -15,7 +16,8 @@ class AuthService
     public function __construct(
         private UserRepository $userRepository,
         private SessionManager $sessionManager,
-        private ?JwtService $jwtService = null
+        private ?JwtService $jwtService = null,
+        private ?EmailService $emailService = null
     ) {}
 
     public function login(string $email, string $password, bool $remember = false): User
@@ -164,12 +166,42 @@ class AuthService
             throw new AuthException('Email address already exists');
         }
 
+        // Générer un token de vérification
+        $verificationToken = bin2hex(random_bytes(32));
+        
+        // Ajouter les données de vérification
+        $userData['email_verified'] = false;
+        $userData['email_verification_token'] = $verificationToken;
+        $userData['email_verification_expires_at'] = date('Y-m-d H:i:s', time() + (24 * 60 * 60)); // 24h
+        
         $user = $this->userRepository->create($userData);
-        $tokens = $this->jwtService->generateTokenPair($user);
+        
+        // Envoyer l'email de vérification
+        if ($this->emailService) {
+            try {
+                $emailSent = $this->emailService->sendVerificationEmail(
+                    $email, 
+                    $prenom . ' ' . $nom, 
+                    $verificationToken
+                );
+                
+                if (!$emailSent) {
+                    error_log("Échec d'envoi de l'email de vérification pour : " . $email);
+                }
+            } catch (Exception $emailError) {
+                error_log("Exception lors de l'envoi d'email de vérification pour $email : " . $emailError->getMessage());
+                // Ne pas faire échouer l'inscription à cause d'un problème d'email
+            }
+        } else {
+            error_log("EmailService non disponible pour l'envoi de vérification à : " . $email);
+        }
 
+        // Ne pas générer de tokens JWT tant que l'email n'est pas vérifié
+        // Retourner juste les informations utilisateur
         return [
             'user' => $user->toArray(),
-            'tokens' => $tokens
+            'message' => 'Inscription réussie ! Veuillez vérifier votre email pour activer votre compte.',
+            'email_verification_required' => true
         ];
     }
 
@@ -234,6 +266,54 @@ class AuthService
     public function verifyEmail(int $userId): bool
     {
         return $this->userRepository->updateEmailVerification($userId, new \DateTime());
+    }
+    
+    /**
+     * Vérifier un email avec le token de vérification
+     */
+    public function verifyEmailByToken(string $token): array
+    {
+        $user = $this->userRepository->findByVerificationToken($token);
+        
+        if (!$user) {
+            throw new AuthException('Token de vérification invalide');
+        }
+        
+        // Vérifier si le token n'a pas expiré
+        $expiresAt = $user->getEmailVerificationExpiresAt();
+        if ($expiresAt && new \DateTime() > $expiresAt) {
+            throw new AuthException('Token de vérification expiré');
+        }
+        
+        // Marquer l'email comme vérifié
+        $success = $this->userRepository->markEmailAsVerified($user->getId());
+        
+        if (!$success) {
+            throw new AuthException('Erreur lors de la vérification');
+        }
+        
+        // Envoyer l'email de bienvenue
+        if ($this->emailService) {
+            $this->emailService->sendWelcomeEmail(
+                $user->getEmail(),
+                $user->getFirstName() . ' ' . $user->getLastName()
+            );
+        }
+        
+        // Générer les tokens JWT maintenant que l'email est vérifié
+        if ($this->jwtService) {
+            $tokens = $this->jwtService->generateTokenPair($user);
+            return [
+                'user' => $user->toArray(),
+                'tokens' => $tokens,
+                'message' => 'Email vérifié avec succès ! Votre compte est maintenant actif.'
+            ];
+        }
+        
+        return [
+            'user' => $user->toArray(),
+            'message' => 'Email vérifié avec succès ! Votre compte est maintenant actif.'
+        ];
     }
 
     public function changePassword(int $userId, string $currentPassword, string $newPassword): bool

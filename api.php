@@ -2,6 +2,17 @@
 
 declare(strict_types=1);
 
+// Configuration pour éviter l'affichage des erreurs PHP qui cassent le JSON
+error_reporting(E_ALL);
+ini_set('display_errors', '0');
+ini_set('log_errors', '1');
+
+// Gestionnaire d'erreurs personnalisé pour capturer les erreurs avant qu'elles n'affectent la sortie JSON
+set_error_handler(function($severity, $message, $file, $line) {
+    error_log("PHP Error: $message in $file on line $line");
+    return true; // Empêche l'affichage de l'erreur
+});
+
 // Test simple si paramètre test=1
 if (isset($_GET['test']) && $_GET['test'] == '1') {
     header('Content-Type: application/json');

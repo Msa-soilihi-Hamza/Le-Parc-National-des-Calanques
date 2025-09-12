@@ -31,6 +31,16 @@ const App = () => {
   };
 
   const handleSignup = (userData) => {
+    // Si l'inscription réussit mais les tokens sont null (email non vérifié)
+    // ne pas connecter l'utilisateur, juste afficher un message
+    if (userData && !userData.tokens) {
+      // Afficher un message ou rester sur la page d'inscription avec un message de succès
+      alert('🎉 Inscription réussie ! Vérifiez votre email pour activer votre compte.');
+      setShowSignup(false); // Retourner à la page de login
+      return;
+    }
+    
+    // Si les tokens sont présents, connecter normalement l'utilisateur
     setUser(userData);
     setShowSignup(false);
   };

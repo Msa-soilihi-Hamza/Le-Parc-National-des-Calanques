@@ -97,7 +97,7 @@ class AuthApiController
             'nom' => 'required|min:2|max:50',
             'prenom' => 'required|min:2|max:50',
             'email' => 'required|email',
-            'password' => 'required|min:6'
+            'password' => 'required|min:12'
         ]);
 
         try {
@@ -108,11 +108,20 @@ class AuthApiController
                 $data['password']
             );
             
-            ApiResponse::success([
-                'message' => 'Registration successful',
-                'user' => $result['user'],
-                'tokens' => $result['tokens']
-            ]);
+            // Le service retourne maintenant un format différent si l'email n'est pas vérifié
+            if (isset($result['email_verification_required']) && $result['email_verification_required']) {
+                ApiResponse::success([
+                    'message' => $result['message'],
+                    'user' => $result['user'],
+                    'email_verification_required' => true
+                ]);
+            } else {
+                ApiResponse::success([
+                    'message' => 'Registration successful',
+                    'user' => $result['user'],
+                    'tokens' => $result['tokens']
+                ]);
+            }
 
         } catch (AuthException $e) {
             ApiResponse::error($e->getMessage(), 400);
