@@ -221,7 +221,7 @@ const UserProfile = ({ userData }) => {
       <div className="text-center mt-8">
         <button 
           type="button" 
-          className="btn-primary mr-4" 
+          className="bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90 transition-colors mr-4" 
           onClick={() => alert('Fonctionnalité à venir')}
         >
           Modifier le profil

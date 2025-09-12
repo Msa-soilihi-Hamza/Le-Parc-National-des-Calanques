@@ -4,7 +4,9 @@ module.exports = {
     "./templates/**/*.php",
     "./public/**/*.html",
     "./src/**/*.{php,js,jsx}",
-    "./index.php"
+    "./index.php",
+    "./*.html",
+    "./test-*.html"
   ],
   theme: {
     extend: {
@@ -53,24 +55,5 @@ module.exports = {
       }
     },
   },
-  plugins: [require('daisyui')],
-  daisyui: {
-    themes: [
-      {
-        parc: {
-          "primary": "#2563eb",
-          "secondary": "#16a34a", 
-          "accent": "#ea580c",
-          "neutral": "#374151",
-          "base-100": "#ffffff",
-          "base-200": "#f3f4f6",
-          "base-300": "#e5e7eb",
-          "info": "#3b82f6",
-          "success": "#10b981",
-          "warning": "#f59e0b",
-          "error": "#ef4444",
-        },
-      },
-    ],
-  },
+  plugins: [],
 }

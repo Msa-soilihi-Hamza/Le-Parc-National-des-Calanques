@@ -41,16 +41,16 @@ const App = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-base-100 flex items-center justify-center">
-        <div className="loading loading-spinner loading-lg text-primary"></div>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-base-100">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="bg-primary text-primary-content">
+      <header className="bg-primary text-primary-foreground">
         <div className="container mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
             <h1 className="text-2xl font-bold">
@@ -61,7 +61,7 @@ const App = () => {
                 <span>Bonjour {user.prenom}</span>
                 <button 
                   onClick={handleLogout}
-                  className="btn btn-sm btn-ghost"
+                  className="px-3 py-1 text-sm bg-transparent border border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10 rounded-md transition-colors"
                 >
                   Déconnexion
                 </button>
@@ -76,16 +76,7 @@ const App = () => {
         {user ? (
           <UserProfile user={user} onUpdate={setUser} />
         ) : (
-          <div className="max-w-md mx-auto">
-            <div className="card bg-base-200 shadow-xl">
-              <div className="card-body">
-                <h2 className="card-title justify-center text-2xl mb-6">
-                  Connexion
-                </h2>
-                <LoginForm onSuccess={handleLogin} />
-              </div>
-            </div>
-          </div>
+          <LoginForm onSuccess={handleLogin} />
         )}
       </main>
     </div>
