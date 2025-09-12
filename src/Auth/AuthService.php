@@ -127,6 +127,11 @@ class AuthService
 
     public function register(array $userData): User
     {
+        // Validation du mot de passe avec regex - minimum 12 caractères
+        if (isset($userData['password']) && !preg_match('/^.{12,}$/', $userData['password'])) {
+            throw new AuthException('Le mot de passe doit contenir au moins 12 caractères');
+        }
+
         if ($this->userRepository->emailExists($userData['email'])) {
             throw new AuthException('Email address already exists');
         }
@@ -141,6 +146,11 @@ class AuthService
     {
         if (!$this->jwtService) {
             throw new AuthException('JWT service not available');
+        }
+
+        // Validation du mot de passe avec regex - minimum 12 caractères
+        if (!preg_match('/^.{12,}$/', $password)) {
+            throw new AuthException('Le mot de passe doit contenir au moins 12 caractères');
         }
 
         $userData = [
@@ -228,6 +238,11 @@ class AuthService
 
     public function changePassword(int $userId, string $currentPassword, string $newPassword): bool
     {
+        // Validation du nouveau mot de passe avec regex - minimum 12 caractères
+        if (!preg_match('/^.{12,}$/', $newPassword)) {
+            throw new AuthException('Le nouveau mot de passe doit contenir au moins 12 caractères');
+        }
+
         $user = $this->userRepository->findById($userId);
         
         if (!$user) {

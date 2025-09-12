@@ -28,15 +28,17 @@ const SignupForm = ({ onSuccess, onSwitchToLogin }) => {
     setLoading(true);
     setError(null);
 
-    // Validation des mots de passe
-    if (formData.password !== formData.confirmPassword) {
-      setError('Les mots de passe ne correspondent pas');
+    // Validation des mots de passe avec regex
+    const passwordRegex = /^.{12,}$/; // Au moins 12 caractères
+    
+    if (!passwordRegex.test(formData.password)) {
+      setError('Le mot de passe doit contenir au moins 12 caractères');
       setLoading(false);
       return;
     }
 
-    if (formData.password.length < 6) {
-      setError('Le mot de passe doit contenir au moins 6 caractères');
+    if (formData.password !== formData.confirmPassword) {
+      setError('Les mots de passe ne correspondent pas');
       setLoading(false);
       return;
     }
@@ -136,7 +138,7 @@ const SignupForm = ({ onSuccess, onSwitchToLogin }) => {
             id="password" 
             name="password"
             type="password"
-            placeholder="Minimum 6 caractères"
+            placeholder="Minimum 12 caractères"
             className="input-white"
             value={formData.password}
             onChange={handleChange}
