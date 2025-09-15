@@ -32,6 +32,11 @@ class AuthService
             throw new AuthException(AuthException::USER_INACTIVE);
         }
 
+        // Vérifier que l'email est vérifié
+        if (!$user->isEmailVerifiedByToken()) {
+            throw new AuthException('Veuillez vérifier votre email avant de vous connecter');
+        }
+
         if (!$user->verifyPassword($password)) {
             throw new AuthException(AuthException::INVALID_CREDENTIALS);
         }
@@ -59,6 +64,11 @@ class AuthService
 
         if (!$user->isActive()) {
             throw new AuthException(AuthException::USER_INACTIVE);
+        }
+
+        // Vérifier que l'email est vérifié
+        if (!$user->isEmailVerifiedByToken()) {
+            throw new AuthException('Veuillez vérifier votre email avant de vous connecter');
         }
 
         if (!$user->verifyPassword($password)) {
