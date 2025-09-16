@@ -21,7 +21,7 @@
 #### **Méthode B : Via ligne de commande**
 ```bash
 # Dans le dossier du projet
-mysql -u root -P 3308 < database/migrations/MIGRATION_COMPLETE_POUR_EQUIPE.sql
+mysql -u root -P 3306 < database/migrations/MIGRATION_COMPLETE_POUR_EQUIPE.sql
 ```
 
 ### **Étape 3 : Vérification**
@@ -54,7 +54,7 @@ mysql -u root -P 3308 < database/migrations/MIGRATION_COMPLETE_POUR_EQUIPE.sql
 
 ## 🆘 En cas de problème
 1. Vérifier que WAMP/XAMPP est démarré
-2. Vérifier le port MySQL (3306 ou 3308)
+2. Vérifier le port MySQL (3306 ou 3306)
 3. Si erreur "base existe déjà", la supprimer avant l'import
 4. Contacter l'équipe sur Discord/WhatsApp
 

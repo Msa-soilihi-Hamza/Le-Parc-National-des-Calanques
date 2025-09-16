@@ -188,6 +188,7 @@ class AuthService
         
         // Envoyer l'email de vérification
         if ($this->emailService) {
+            error_log("📧 Tentative d'envoi d'email de vérification à : $email");
             try {
                 $emailSent = $this->emailService->sendVerificationEmail(
                     $email, 
@@ -195,15 +196,18 @@ class AuthService
                     $verificationToken
                 );
                 
-                if (!$emailSent) {
-                    error_log("Échec d'envoi de l'email de vérification pour : " . $email);
+                if ($emailSent) {
+                    error_log("✅ Email de vérification envoyé avec succès à : $email");
+                } else {
+                    error_log("❌ Échec d'envoi de l'email de vérification pour : $email");
                 }
             } catch (Exception $emailError) {
-                error_log("Exception lors de l'envoi d'email de vérification pour $email : " . $emailError->getMessage());
+                error_log("❌ EXCEPTION lors de l'envoi d'email de vérification pour $email : " . $emailError->getMessage());
+                error_log("📍 Trace : " . $emailError->getTraceAsString());
                 // Ne pas faire échouer l'inscription à cause d'un problème d'email
             }
         } else {
-            error_log("EmailService non disponible pour l'envoi de vérification à : " . $email);
+            error_log("❌ EmailService NULL - impossible d'envoyer l'email de vérification à : $email");
         }
 
         // Ne pas générer de tokens JWT tant que l'email n'est pas vérifié

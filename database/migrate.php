@@ -6,7 +6,7 @@
 
 class DatabaseMigrator {
     private $host = 'localhost';
-    private $port = '3308';
+    private $port = '3306';
     private $dbname = 'le-parc-national-des-calanques';
     private $username = 'root';
     private $password = '';

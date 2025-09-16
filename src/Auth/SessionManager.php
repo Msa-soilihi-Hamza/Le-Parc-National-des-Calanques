@@ -118,14 +118,19 @@ class SessionManager
     private function startSession(): void
     {
         if (session_status() === PHP_SESSION_NONE) {
-            // Configuration sécurisée de la session
-            ini_set('session.cookie_httponly', '1');
-            ini_set('session.cookie_secure', '1');
-            ini_set('session.cookie_samesite', 'Strict');
-            ini_set('session.use_strict_mode', '1');
-            ini_set('session.gc_maxlifetime', (string) self::SESSION_TIMEOUT);
+            // Configuration sécurisée de la session (seulement si pas en CLI)
+            if (php_sapi_name() !== 'cli' && !headers_sent()) {
+                ini_set('session.cookie_httponly', '1');
+                ini_set('session.cookie_secure', '1');
+                ini_set('session.cookie_samesite', 'Strict');
+                ini_set('session.use_strict_mode', '1');
+                ini_set('session.gc_maxlifetime', (string) self::SESSION_TIMEOUT);
+            }
             
-            session_start();
+            // Démarrer la session seulement si pas en CLI
+            if (php_sapi_name() !== 'cli') {
+                session_start();
+            }
         }
     }
 

@@ -22,7 +22,7 @@ if (!$token) {
     try {
         // Initialiser les services
         $pdo = new PDO(
-            'mysql:host=localhost;port=3308;dbname=le-parc-national-des-calanques;charset=utf8mb4',
+            'mysql:host=localhost;port=3306;dbname=le-parc-national-des-calanques;charset=utf8mb4',
             'root',
             '',
             [

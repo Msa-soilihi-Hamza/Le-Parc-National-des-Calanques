@@ -79,8 +79,8 @@ class UserRepository
             'first_name' => $userData['first_name'],
             'last_name' => $userData['last_name'],
             'is_active' => $userData['is_active'] ?? true,
-            'abonnement' => $userData['abonnement'] ?? false,
-            'email_verified' => $userData['email_verified'] ?? false,
+            'abonnement' => (int) ($userData['abonnement'] ?? false),
+            'email_verified' => (int) ($userData['email_verified'] ?? false),
             'email_verification_token' => $userData['email_verification_token'] ?? null,
             'email_verification_expires_at' => $userData['email_verification_expires_at'] ?? null
         ];

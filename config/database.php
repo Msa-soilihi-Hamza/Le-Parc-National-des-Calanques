@@ -2,7 +2,7 @@
 
 class Database {
     private string $host = 'localhost';
-    private string $port = '3308';
+    private string $port = '3306';
     private string $db_name = 'le-parc-national-des-calanques';
     private string $username = 'root';
     private string $password = '';

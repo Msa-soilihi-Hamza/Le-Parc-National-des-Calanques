@@ -18,7 +18,7 @@ if ($confirmation !== 'OUI') {
 
 try {
     $host = 'localhost';
-    $port = '3308';
+    $port = '3306';
     $dbname = 'le-parc-national-des-calanques';
     $username = 'root';
     $password = '';

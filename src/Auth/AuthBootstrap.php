@@ -38,8 +38,10 @@ class AuthBootstrap
             $emailService = null;
             try {
                 $emailService = new EmailService();
+                error_log("EmailService initialisé avec succès");
             } catch (\Exception $e) {
-                error_log("Failed to initialize EmailService: " . $e->getMessage());
+                error_log("ERREUR CRITIQUE - Failed to initialize EmailService: " . $e->getMessage());
+                error_log("Trace: " . $e->getTraceAsString());
             }
             
             self::$authService = new AuthService(self::$userRepository, $sessionManager, self::$jwtService, $emailService);

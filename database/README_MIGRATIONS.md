@@ -10,7 +10,7 @@ git clone [url-du-repo]
 cd Le-Parc-National-des-Calanques
 
 # 2. Créer la base de données
-mysql -u root -P 3308 -e "CREATE DATABASE IF NOT EXISTS \`le-parc-national-des-calanques\`"
+mysql -u root -P 3306 -e "CREATE DATABASE IF NOT EXISTS \`le-parc-national-des-calanques\`"
 
 # 3. Exécuter les migrations
 php database/migrate.php
@@ -134,7 +134,7 @@ git push origin main
 
 ```php
 private $host = 'localhost';
-private $port = '3308';        // Changez si nécessaire
+private $port = '3306';        // Changez si nécessaire
 private $dbname = 'le-parc-national-des-calanques';
 private $username = 'root';
 private $password = '';        // Ajoutez si nécessaire
@@ -149,12 +149,12 @@ php database/migrate.php status
 
 # Si une migration apparaît comme "En attente" alors qu'elle est déjà appliquée,
 # ajoutez-la manuellement à la table migrations :
-mysql -u root -P 3308 le-parc-national-des-calanques -e "INSERT INTO migrations (migration) VALUES ('001_create_base_tables.sql')"
+mysql -u root -P 3306 le-parc-national-des-calanques -e "INSERT INTO migrations (migration) VALUES ('001_create_base_tables.sql')"
 ```
 
 ### Erreur de connexion
 - Vérifiez que WAMP/XAMPP est démarré
-- Vérifiez le port MySQL (3306 ou 3308)
+- Vérifiez le port MySQL (3306 ou 3306)
 - Vérifiez que la base existe
 
 ### Migration échoue
