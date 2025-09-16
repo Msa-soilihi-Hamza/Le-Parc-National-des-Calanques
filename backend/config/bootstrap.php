@@ -2,7 +2,7 @@
 
 // Bootstrap de l'application - Chargement unique des variables d'environnement
 
-require_once __DIR__ . '/backend/src/Shared/Utils/EnvLoader.php';
+require_once __DIR__ . '/../src/Shared/Utils/EnvLoader.php';
 
 use ParcCalanques\Shared\Utils\EnvLoader;
 

@@ -1,13 +1,15 @@
 <?php
 
 require_once 'autoload.php';
+require_once 'bootstrap.php';
 
-use ParcCalanques\Models\UserRepository;
+use ParcCalanques\Users\Models\UserRepository;
 use ParcCalanques\Auth\AuthService;
 use ParcCalanques\Auth\JwtService;
 use ParcCalanques\Auth\SessionManager;
-use ParcCalanques\Services\EmailService;
-use ParcCalanques\Exceptions\AuthException;
+use ParcCalanques\Shared\Services\EmailService;
+use ParcCalanques\Shared\Exceptions\AuthException;
+use ParcCalanques\Shared\Utils\EnvLoader;
 
 // Récupérer le token depuis l'URL
 $token = $_GET['token'] ?? null;
@@ -20,16 +22,13 @@ if (!$token) {
     $message = 'Token de vérification manquant.';
 } else {
     try {
-        // Initialiser les services
-        $pdo = new PDO(
-            'mysql:host=localhost;port=3308;dbname=le-parc-national-des-calanques;charset=utf8mb4',
-            'root',
-            '',
-            [
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            ]
-        );
+        // Initialiser les services avec la configuration .env
+        $database = new Database();
+        $pdo = $database->getConnection();
+
+        if (!$pdo) {
+            throw new \RuntimeException('Unable to connect to database');
+        }
         
         $userRepository = new UserRepository($pdo);
         $sessionManager = new SessionManager($userRepository);

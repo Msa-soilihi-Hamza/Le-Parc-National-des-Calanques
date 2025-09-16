@@ -22,7 +22,7 @@ class ApiService {
   }
 
   async request(endpoint, options = {}) {
-    const url = `${this.baseUrl}/api.php${endpoint}`;
+    const url = `${this.baseUrl}/backend/public/index.php${endpoint}`;
     const config = {
       headers: {
         'Content-Type': 'application/json',
