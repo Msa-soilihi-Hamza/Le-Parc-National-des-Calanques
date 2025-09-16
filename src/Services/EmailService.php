@@ -7,6 +7,7 @@ namespace ParcCalanques\Services;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
+use ParcCalanques\Utils\EnvLoader;
 
 class EmailService
 {
@@ -14,22 +15,31 @@ class EmailService
     
     public function __construct()
     {
+        // Charger les variables d'environnement
+        EnvLoader::load();
+
         $this->mailer = new PHPMailer(true);
-        
-        // Configuration SMTP
+
+        // Configuration SMTP depuis les variables d'environnement
         $this->mailer->isSMTP();
-        $this->mailer->Host = 'smtp.gmail.com';
+        $this->mailer->Host = EnvLoader::getRequired('SMTP_HOST');
         $this->mailer->SMTPAuth = true;
-        $this->mailer->Username = 'hamza.msa-soilihi@laplateforme.io';
-        $this->mailer->Password = 'anab frwp hvlu gobb';
-        $this->mailer->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $this->mailer->Port = 587;
-        
+        $this->mailer->Username = EnvLoader::getRequired('SMTP_USERNAME');
+        $this->mailer->Password = EnvLoader::getRequired('SMTP_PASSWORD');
+
+        // Configuration de l'encryption
+        $encryption = EnvLoader::get('SMTP_ENCRYPTION', 'tls');
+        $this->mailer->SMTPSecure = $encryption === 'ssl' ? PHPMailer::ENCRYPTION_SMTPS : PHPMailer::ENCRYPTION_STARTTLS;
+        $this->mailer->Port = (int)EnvLoader::get('SMTP_PORT', '587');
+
         // Configuration de l'expéditeur
-        $this->mailer->setFrom('hamza.msa-soilihi@laplateforme.io', 'Parc National des Calanques');
-        
-        // Configuration pour le débogage (à désactiver en production)
-        $this->mailer->SMTPDebug = SMTP::DEBUG_OFF;
+        $fromEmail = EnvLoader::getRequired('SMTP_FROM_EMAIL');
+        $fromName = EnvLoader::get('SMTP_FROM_NAME', 'Parc National des Calanques');
+        $this->mailer->setFrom($fromEmail, $fromName);
+
+        // Configuration pour le débogage
+        $debugLevel = (int)EnvLoader::get('SMTP_DEBUG', '0');
+        $this->mailer->SMTPDebug = $debugLevel;
         $this->mailer->isHTML(true);
     }
     
@@ -44,8 +54,9 @@ class EmailService
             
             $this->mailer->Subject = 'Vérification de votre compte - Parc National des Calanques';
             
-            // URL de vérification
-            $verificationUrl = "http://localhost/Le-Parc-National-des-Calanques/verify-email.php?token=" . urlencode($verificationToken);
+            // URL de vérification depuis les variables d'environnement
+            $baseUrl = EnvLoader::get('APP_URL', 'http://localhost/Le-Parc-National-des-Calanques');
+            $verificationUrl = $baseUrl . "/verify-email.php?token=" . urlencode($verificationToken);
             
             // Template HTML
             $htmlBody = $this->getVerificationEmailTemplate($name, $verificationUrl);
