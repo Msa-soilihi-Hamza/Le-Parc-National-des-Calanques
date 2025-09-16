@@ -14,10 +14,7 @@ class Database {
     private ?PDO $pdo = null;
 
     public function __construct() {
-        // Charger les variables d'environnement
-        EnvLoader::load();
-
-        // Configuration depuis le fichier .env
+        // Configuration depuis les variables d'environnement (déjà chargées)
         $this->host = EnvLoader::getRequired('DB_HOST');
         $this->port = EnvLoader::getRequired('DB_PORT');
         $this->db_name = EnvLoader::getRequired('DB_NAME');

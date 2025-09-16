@@ -15,8 +15,7 @@ class EmailService
     
     public function __construct()
     {
-        // Charger les variables d'environnement
-        EnvLoader::load();
+        // Variables d'environnement déjà chargées automatiquement
 
         $this->mailer = new PHPMailer(true);
 
