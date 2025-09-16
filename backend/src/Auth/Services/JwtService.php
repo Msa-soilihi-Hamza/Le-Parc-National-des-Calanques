@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace ParcCalanques\Auth;
+namespace ParcCalanques\Auth\Services;
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Firebase\JWT\ExpiredException;
 use Firebase\JWT\SignatureInvalidException;
-use ParcCalanques\Users\Models\User;
+use ParcCalanques\Auth\Models\User;
 use ParcCalanques\Shared\Exceptions\AuthException;
 use DateTime;
 use DateTimeImmutable;

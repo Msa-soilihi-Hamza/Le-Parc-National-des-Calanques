@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace ParcCalanques\Controllers;
+namespace ParcCalanques\Auth\Controllers;
 
-use ParcCalanques\Auth\AuthService;
-use ParcCalanques\Auth\AuthGuard;
-use ParcCalanques\Exceptions\AuthException;
+use ParcCalanques\Auth\Services\AuthService;
+use ParcCalanques\Auth\DTOs\LoginRequest;
+use ParcCalanques\Auth\DTOs\AuthResponse;
+use ParcCalanques\Shared\Exceptions\AuthException;
 
 class AuthController
 {

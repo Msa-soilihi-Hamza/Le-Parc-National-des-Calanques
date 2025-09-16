@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace ParcCalanques\Auth;
 
-use ParcCalanques\Models\User;
+use ParcCalanques\Auth\Models\User;
+use ParcCalanques\Auth\Services\AuthService;
+use ParcCalanques\Auth\Middleware\AuthMiddleware;
 
 class AuthGuard
 {

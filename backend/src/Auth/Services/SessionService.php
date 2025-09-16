@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace ParcCalanques\Auth;
+namespace ParcCalanques\Auth\Services;
 
-use ParcCalanques\Users\Models\User;
-use ParcCalanques\Users\Models\UserRepository;
+use ParcCalanques\Auth\Models\User;
+use ParcCalanques\Auth\Models\UserRepository;
 use ParcCalanques\Shared\Exceptions\AuthException;
 
-class SessionManager
+class SessionService
 {
     private const SESSION_KEY_USER_ID = 'user_id';
     private const SESSION_KEY_USER_ROLE = 'user_role';

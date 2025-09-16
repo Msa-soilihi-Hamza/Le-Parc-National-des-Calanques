@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ParcCalanques\Users\Models;
+namespace ParcCalanques\Auth\Models;
 
 use DateTime;
 

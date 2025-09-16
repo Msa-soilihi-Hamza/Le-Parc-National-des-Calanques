@@ -3,10 +3,10 @@
 require_once 'autoload.php';
 require_once 'bootstrap.php';
 
-use ParcCalanques\Users\Models\UserRepository;
-use ParcCalanques\Auth\AuthService;
-use ParcCalanques\Auth\JwtService;
-use ParcCalanques\Auth\SessionManager;
+use ParcCalanques\Auth\Models\UserRepository;
+use ParcCalanques\Auth\Services\AuthService;
+use ParcCalanques\Auth\Services\JwtService;
+use ParcCalanques\Auth\Services\SessionService;
 use ParcCalanques\Shared\Services\EmailService;
 use ParcCalanques\Shared\Exceptions\AuthException;
 use ParcCalanques\Shared\Utils\EnvLoader;
@@ -31,7 +31,7 @@ if (!$token) {
         }
         
         $userRepository = new UserRepository($pdo);
-        $sessionManager = new SessionManager($userRepository);
+        $sessionService = new SessionService($userRepository);
         $jwtService = new JwtService();
         
         // EmailService peut échouer, créons-le optionnel
@@ -44,9 +44,9 @@ if (!$token) {
         }
         
         $authService = new AuthService(
-            $userRepository, 
-            $sessionManager, 
-            $jwtService, 
+            $userRepository,
+            $sessionService,
+            $jwtService,
             $emailService
         );
         

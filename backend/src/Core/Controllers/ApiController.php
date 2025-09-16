@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace ParcCalanques\Core\Controllers;
 
-use ParcCalanques\Auth\AuthService;
-use ParcCalanques\Auth\JwtService;
-use ParcCalanques\Auth\JwtMiddleware;
-use ParcCalanques\Exceptions\AuthException;
+use ParcCalanques\Auth\Services\AuthService;
+use ParcCalanques\Auth\Services\JwtService;
+use ParcCalanques\Auth\Middleware\JwtMiddleware;
+use ParcCalanques\Shared\Exceptions\AuthException;
 
 class ApiController
 {

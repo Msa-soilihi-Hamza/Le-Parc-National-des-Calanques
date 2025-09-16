@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace ParcCalanques\Auth;
+namespace ParcCalanques\Auth\Services;
 
-use ParcCalanques\Users\Models\User;
-use ParcCalanques\Users\Models\UserRepository;
+use ParcCalanques\Auth\Models\User;
+use ParcCalanques\Auth\Models\UserRepository;
 use ParcCalanques\Shared\Exceptions\AuthException;
 use ParcCalanques\Shared\Services\EmailService;
 
@@ -15,7 +15,7 @@ class AuthService
     
     public function __construct(
         private UserRepository $userRepository,
-        private SessionManager $sessionManager,
+        private SessionService $sessionService,
         private ?JwtService $jwtService = null,
         private ?EmailService $emailService = null
     ) {}
@@ -41,7 +41,7 @@ class AuthService
             throw new AuthException(AuthException::INVALID_CREDENTIALS);
         }
 
-        $this->sessionManager->createSession($user);
+        $this->sessionService->createSession($user);
 
         if ($remember) {
             $this->createRememberToken($user);
@@ -127,13 +127,13 @@ class AuthService
 
     public function logout(): void
     {
-        $user = $this->sessionManager->getCurrentUser();
+        $user = $this->sessionService->getCurrentUser();
         
         if ($user) {
             $this->userRepository->updateRememberToken($user->getId(), null);
         }
 
-        $this->sessionManager->destroySession();
+        $this->sessionService->destroySession();
         $this->clearRememberCookie();
     }
 
@@ -149,7 +149,7 @@ class AuthService
         }
 
         $user = $this->userRepository->create($userData);
-        $this->sessionManager->createSession($user);
+        $this->sessionService->createSession($user);
 
         return $user;
     }
@@ -217,7 +217,7 @@ class AuthService
 
     public function getCurrentUser(): ?User
     {
-        return $this->sessionManager->getCurrentUser();
+        return $this->sessionService->getCurrentUser();
     }
 
     public function isAuthenticated(): bool
@@ -267,7 +267,7 @@ class AuthService
             return null;
         }
 
-        $this->sessionManager->createSession($user);
+        $this->sessionService->createSession($user);
         $this->refreshRememberToken($user);
 
         return $user;

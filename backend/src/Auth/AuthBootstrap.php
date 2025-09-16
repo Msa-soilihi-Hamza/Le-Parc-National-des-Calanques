@@ -5,7 +5,11 @@ declare(strict_types=1);
 namespace ParcCalanques\Auth;
 
 use Database;
-use ParcCalanques\Users\Models\UserRepository;
+use ParcCalanques\Auth\Models\UserRepository;
+use ParcCalanques\Auth\Services\AuthService;
+use ParcCalanques\Auth\Services\JwtService;
+use ParcCalanques\Auth\Services\SessionService;
+use ParcCalanques\Auth\Middleware\JwtMiddleware;
 use ParcCalanques\Shared\Services\EmailService;
 
 class AuthBootstrap
@@ -28,7 +32,7 @@ class AuthBootstrap
 
             // Initialize repositories and services
             self::$userRepository = new UserRepository($pdo);
-            $sessionManager = new SessionManager(self::$userRepository);
+            $sessionService = new SessionService(self::$userRepository);
             
             // Use a fixed secret key for JWT (should be from environment in production)
             $jwtSecret = $_ENV['JWT_SECRET'] ?? 'parc-calanques-secret-key-2025-dev-mode-change-in-production';
@@ -42,7 +46,7 @@ class AuthBootstrap
                 error_log("Failed to initialize EmailService: " . $e->getMessage());
             }
             
-            self::$authService = new AuthService(self::$userRepository, $sessionManager, self::$jwtService, $emailService);
+            self::$authService = new AuthService(self::$userRepository, $sessionService, self::$jwtService, $emailService);
 
             // Initialize AuthGuard
             AuthGuard::init(self::$authService);

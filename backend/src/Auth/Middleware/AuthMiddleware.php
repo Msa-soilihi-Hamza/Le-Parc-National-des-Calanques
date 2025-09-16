@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace ParcCalanques\Auth;
+namespace ParcCalanques\Auth\Middleware;
 
-use ParcCalanques\Models\User;
-use ParcCalanques\Exceptions\AuthException;
+use ParcCalanques\Auth\Models\User;
+use ParcCalanques\Shared\Exceptions\AuthException;
+use ParcCalanques\Auth\Services\AuthService;
 
 class AuthMiddleware
 {

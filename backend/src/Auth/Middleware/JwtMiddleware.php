@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace ParcCalanques\Auth;
+namespace ParcCalanques\Auth\Middleware;
 
-use ParcCalanques\Users\Models\User;
-use ParcCalanques\Users\Models\UserRepository;
+use ParcCalanques\Auth\Models\User;
+use ParcCalanques\Auth\Models\UserRepository;
+use ParcCalanques\Auth\Services\JwtService;
 use ParcCalanques\Shared\Exceptions\AuthException;
 
 class JwtMiddleware
