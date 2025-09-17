@@ -18,4 +18,4 @@ return [
 
     // Routes Système
     'GET /api/health' => 'HealthApiController@health',
-];
+]

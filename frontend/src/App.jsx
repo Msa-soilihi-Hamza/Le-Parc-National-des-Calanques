@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import LoginForm from './components/LoginForm.jsx';
-import SignupPage from './components/SignupPage.jsx';
-import UserProfile from './components/UserProfile.jsx';
+import LoginForm from './components/auth/LoginForm.jsx';
+import SignupPage from './components/auth/SignupPage.jsx';
+import UserProfile from './components/auth/UserProfile.jsx';
 import api from './services/api.js';
 
 const App = () => {

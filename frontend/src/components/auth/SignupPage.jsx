@@ -1,5 +1,5 @@
 import React from 'react';
-import SignupForm from './SignupForm';
+import SignupForm from './SignupForm.jsx';
 
 // Composant pour l'icône GalleryVerticalEnd (remplace Lucide)
 const GalleryVerticalEndIcon = ({ className = "size-4" }) => (

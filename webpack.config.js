@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
   entry: {
-    main: './src/react/index.js'
+    main: './frontend/src/index.js'
   },
   output: {
     path: path.resolve(__dirname, 'public/js'),
@@ -29,10 +29,10 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx'],
     alias: {
-      '@': path.resolve(__dirname, './src/react'),
-      '@/components': path.resolve(__dirname, './src/react/components'),
-      '@/lib': path.resolve(__dirname, './src/react/lib'),
-      '@/utils': path.resolve(__dirname, './src/react/lib/utils')
+      '@': path.resolve(__dirname, './frontend/src'),
+      '@/components': path.resolve(__dirname, './frontend/src/components'),
+      '@/lib': path.resolve(__dirname, './frontend/src/lib'),
+      '@/utils': path.resolve(__dirname, './frontend/src/lib/utils')
     }
   },
   devtool: 'source-map'

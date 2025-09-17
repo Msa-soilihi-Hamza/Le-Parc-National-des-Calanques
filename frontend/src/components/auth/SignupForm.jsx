@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import api from "../services/api.js";
+import { Button } from "../ui/button.jsx";
+import { Input } from "../ui/input.jsx";
+import { Label } from "../ui/label.jsx";
+import api from "../../services/api.js";
 
 const SignupForm = ({ onSuccess, onSwitchToLogin }) => {
   const [formData, setFormData] = useState({
