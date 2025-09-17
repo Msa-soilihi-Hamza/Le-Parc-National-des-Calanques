@@ -31,6 +31,117 @@ require_once __DIR__ . '/../config/bootstrap.php';
 
 use ParcCalanques\Auth\AuthBootstrap;
 use ParcCalanques\Shared\Exceptions\AuthException;
+use ParcCalanques\Admin\Controllers\UserController;
+use ParcCalanques\Admin\Services\UserManagementService;
+use ParcCalanques\Admin\Middleware\AdminMiddleware;
+use ParcCalanques\Auth\Models\UserRepository;
+use ParcCalanques\Auth\Services\JwtService;
+
+require_once __DIR__ . '/../config/database.php';
+
+function handleAdminRoutes($path, $method) {
+
+    try {
+        $database = new Database();
+        $pdo = $database->getConnection();
+        $userRepository = new UserRepository($pdo);
+        $userManagementService = new UserManagementService($userRepository);
+        $adminMiddleware = new AdminMiddleware();
+        $userController = new UserController($userManagementService, $adminMiddleware);
+        $jwtService = new JwtService();
+
+        $getCurrentUser = function() use ($jwtService, $userRepository) {
+            $token = null;
+            $headers = getallheaders();
+
+            if (isset($headers['Authorization'])) {
+                $authHeader = $headers['Authorization'];
+                if (preg_match('/Bearer\s+(.*)$/i', $authHeader, $matches)) {
+                    $token = $matches[1];
+                }
+            }
+
+            if (!$token) {
+                return null;
+            }
+
+            try {
+                $payload = $jwtService->validateToken($token);
+                return $userRepository->findById($payload['user_id']);
+            } catch (Exception $e) {
+                return null;
+            }
+        };
+
+        $currentUser = $getCurrentUser();
+
+        // Router les différentes routes admin
+        $normalizedPath = str_replace(['/api/admin', '/admin'], '', $path);
+
+        switch (true) {
+            case $normalizedPath === '/users' && $method === 'GET':
+                $response = $userController->index($currentUser);
+                http_response_code($response['success'] ? 200 : 400);
+                echo json_encode($response);
+                break;
+
+            case preg_match('#^/users/(\d+)$#', $normalizedPath, $matches) && $method === 'GET':
+                $response = $userController->show((int)$matches[1], $currentUser);
+                http_response_code($response['success'] ? 200 : ($response['message'] === 'User not found' ? 404 : 400));
+                echo json_encode($response);
+                break;
+
+            case $normalizedPath === '/users' && $method === 'POST':
+                $response = $userController->create($currentUser);
+                http_response_code($response['success'] ? 201 : 400);
+                echo json_encode($response);
+                break;
+
+            case preg_match('#^/users/(\d+)$#', $normalizedPath, $matches) && $method === 'PUT':
+                $response = $userController->update((int)$matches[1], $currentUser);
+                http_response_code($response['success'] ? 200 : ($response['message'] === 'User not found' ? 404 : 400));
+                echo json_encode($response);
+                break;
+
+            case preg_match('#^/users/(\d+)$#', $normalizedPath, $matches) && $method === 'DELETE':
+                $response = $userController->delete((int)$matches[1], $currentUser);
+                http_response_code($response['success'] ? 200 : ($response['message'] === 'User not found' ? 404 : 400));
+                echo json_encode($response);
+                break;
+
+            case preg_match('#^/users/(\d+)/activate$#', $normalizedPath, $matches) && $method === 'PATCH':
+                $response = $userController->activate((int)$matches[1], $currentUser);
+                http_response_code($response['success'] ? 200 : ($response['message'] === 'User not found' ? 404 : 400));
+                echo json_encode($response);
+                break;
+
+            case preg_match('#^/users/(\d+)/deactivate$#', $normalizedPath, $matches) && $method === 'PATCH':
+                $response = $userController->deactivate((int)$matches[1], $currentUser);
+                http_response_code($response['success'] ? 200 : ($response['message'] === 'User not found' ? 404 : 400));
+                echo json_encode($response);
+                break;
+
+            default:
+                http_response_code(404);
+                header('Content-Type: application/json');
+                echo json_encode([
+                    'error' => 'Admin route not found',
+                    'path' => $path,
+                    'method' => $method
+                ]);
+                break;
+        }
+
+    } catch (Exception $e) {
+        http_response_code(500);
+        header('Content-Type: application/json');
+        echo json_encode([
+            'success' => false,
+            'message' => 'Internal server error: ' . $e->getMessage(),
+            'data' => null
+        ]);
+    }
+}
 
 try {
     // Initialize authentication system
@@ -129,6 +240,11 @@ try {
             break;
 
         default:
+            // Check for admin routes
+            if (preg_match('#^/api/admin(/.*)?$#', $path, $matches) || preg_match('#^/admin(/.*)?$#', $path, $matches)) {
+                handleAdminRoutes($path, $requestMethod);
+                break;
+            }
             http_response_code(404);
             header('Content-Type: application/json');
             echo json_encode([

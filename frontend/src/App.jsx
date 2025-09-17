@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import LoginForm from './components/auth/LoginForm.jsx';
 import SignupPage from './components/auth/SignupPage.jsx';
 import UserProfile from './components/auth/UserProfile.jsx';
+import AdminPanel from './pages/admin/AdminPanel.jsx';
 import api from './services/api.js';
 
 const App = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showSignup, setShowSignup] = useState(false);
+  const [showAdmin, setShowAdmin] = useState(false);
 
   useEffect(() => {
     checkAuth();
@@ -79,8 +81,18 @@ const App = () => {
             </h1>
             {user && (
               <div className="flex items-center gap-4">
-                <span>Bonjour {user.prenom}</span>
-                <button 
+                <span>Bonjour {user.first_name || user.prenom}</span>
+
+                {user.role === 'admin' && (
+                  <button
+                    onClick={() => setShowAdmin(!showAdmin)}
+                    className="px-3 py-1 text-sm bg-transparent border border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10 rounded-md transition-colors"
+                  >
+                    {showAdmin ? '👤 Profil' : '👑 Admin'}
+                  </button>
+                )}
+
+                <button
                   onClick={handleLogout}
                   className="px-3 py-1 text-sm bg-transparent border border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10 rounded-md transition-colors"
                 >
@@ -96,7 +108,11 @@ const App = () => {
       <main>
         {user ? (
           <div className="container mx-auto px-4 py-8">
-            <UserProfile user={user} onUpdate={setUser} />
+            {showAdmin && user.role === 'admin' ? (
+              <AdminPanel user={user} />
+            ) : (
+              <UserProfile user={user} onUpdate={setUser} />
+            )}
           </div>
         ) : showSignup ? (
           <SignupPage 

@@ -239,4 +239,118 @@ class UserRepository
             emailVerificationExpiresAt: $row['email_verification_expires_at'] ? new DateTime($row['email_verification_expires_at']) : null
         );
     }
+
+    public function update(int $id, array $data): bool
+    {
+        $fields = [];
+        $params = ['id' => $id];
+
+        if (isset($data['email'])) {
+            $fields[] = 'email = :email';
+            $params['email'] = $data['email'];
+        }
+
+        if (isset($data['password'])) {
+            $fields[] = 'password_hash = :password_hash';
+            $params['password_hash'] = User::hashPassword($data['password']);
+        }
+
+        if (isset($data['first_name'])) {
+            $fields[] = 'prenom = :first_name';
+            $params['first_name'] = $data['first_name'];
+        }
+
+        if (isset($data['last_name'])) {
+            $fields[] = 'nom = :last_name';
+            $params['last_name'] = $data['last_name'];
+        }
+
+        if (isset($data['role'])) {
+            $fields[] = 'role = :role';
+            $params['role'] = $data['role'];
+        }
+
+        if (isset($data['is_active'])) {
+            $fields[] = 'is_active = :is_active';
+            $params['is_active'] = $data['is_active'] ? 1 : 0;
+        }
+
+        if (isset($data['abonnement'])) {
+            $fields[] = 'abonnement = :abonnement';
+            $params['abonnement'] = $data['abonnement'] ? 1 : 0;
+        }
+
+        if (isset($data['carte_membre_numero'])) {
+            $fields[] = 'carte_membre_numero = :carte_membre_numero';
+            $params['carte_membre_numero'] = $data['carte_membre_numero'];
+        }
+
+        if (isset($data['carte_membre_date_validite'])) {
+            $fields[] = 'carte_membre_date_validite = :carte_membre_date_validite';
+            $params['carte_membre_date_validite'] = $data['carte_membre_date_validite'];
+        }
+
+        if (empty($fields)) {
+            return true;
+        }
+
+        $fields[] = 'updated_at = CURRENT_TIMESTAMP';
+        $sql = 'UPDATE Utilisateur SET ' . implode(', ', $fields) . ' WHERE id_utilisateur = :id';
+
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute($params);
+    }
+
+    public function delete(int $id): bool
+    {
+        $stmt = $this->pdo->prepare('DELETE FROM Utilisateur WHERE id_utilisateur = :id');
+        return $stmt->execute(['id' => $id]);
+    }
+
+    public function search(string $term, int $limit = 50, int $offset = 0): array
+    {
+        $searchTerm = '%' . $term . '%';
+
+        $stmt = $this->pdo->prepare('
+            SELECT id_utilisateur as id, email, password_hash, role, prenom as first_name, nom as last_name,
+                   is_active, email_verified_at, remember_token, created_at, updated_at,
+                   abonnement, carte_membre_numero, carte_membre_date_validite,
+                   email_verified, email_verification_token, email_verification_expires_at
+            FROM Utilisateur
+            WHERE email LIKE :term
+               OR prenom LIKE :term
+               OR nom LIKE :term
+               OR CONCAT(prenom, " ", nom) LIKE :term
+            ORDER BY created_at DESC
+            LIMIT :limit OFFSET :offset
+        ');
+
+        $stmt->bindValue(':term', $searchTerm, PDO::PARAM_STR);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $users = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $users[] = $this->mapRowToUser($row);
+        }
+
+        return $users;
+    }
+
+    public function getSearchCount(string $term): int
+    {
+        $searchTerm = '%' . $term . '%';
+
+        $stmt = $this->pdo->prepare('
+            SELECT COUNT(*) FROM Utilisateur
+            WHERE email LIKE :term
+               OR prenom LIKE :term
+               OR nom LIKE :term
+               OR CONCAT(prenom, " ", nom) LIKE :term
+        ');
+
+        $stmt->execute(['term' => $searchTerm]);
+        return (int) $stmt->fetchColumn();
+    }
 }

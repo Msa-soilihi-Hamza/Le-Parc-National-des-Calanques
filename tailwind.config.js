@@ -4,6 +4,9 @@ module.exports = {
     "./templates/**/*.php",
     "./public/**/*.html",
     "./src/**/*.{php,js,jsx}",
+    "./frontend/src/**/*.{js,jsx}",
+    "./frontend/src/pages/**/*.{js,jsx}",
+    "./frontend/src/components/**/*.{js,jsx}",
     "./index.php",
     "./*.html",
     "./test-*.html"

@@ -7,6 +7,9 @@ return [
     // Routes Système
     'GET /api/health' => 'HealthApiController@health',
 
+    // Routes Administration (gestion des utilisateurs)
+    'admin' => require __DIR__ . '/../src/Admin/Routes/admin-routes.php',
+
     // Routes Utilisateurs (à créer plus tard)
     // 'GET /api/users' => 'UserController@index',
     // 'GET /api/users/{id}' => 'UserController@show',

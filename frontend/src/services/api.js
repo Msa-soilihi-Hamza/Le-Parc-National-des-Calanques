@@ -140,6 +140,19 @@ class ApiService {
       body: JSON.stringify(profileData)
     });
   }
+
+  // Méthodes admin
+  async getUsers(page = 1) {
+    return this.get(`/admin/users?page=${page}`);
+  }
+
+  async toggleUser(id, action) {
+    return this.request(`/admin/users/${id}/${action}`, { method: 'PATCH' });
+  }
+
+  async deleteUser(id) {
+    return this.request(`/admin/users/${id}`, { method: 'DELETE' });
+  }
 }
 
 // Instance globale
