@@ -2,14 +2,14 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/react/*"],
-      "@/components/*": ["./src/react/components/*"],
-      "@/lib/*": ["./src/react/lib/*"],
-      "@/utils": ["./src/react/lib/utils"]
+      "@/*": ["./frontend/src/*"],
+      "@/components/*": ["./frontend/src/components/*"],
+      "@/lib/*": ["./frontend/src/lib/*"],
+      "@/utils": ["./frontend/src/lib/utils"]
     }
   },
   "include": [
-    "src/react/**/*"
+    "frontend/src/**/*"
   ],
   "exclude": [
     "node_modules"
