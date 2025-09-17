@@ -1,6 +1,8 @@
 // Service API pour communiquer avec le backend PHP
 class ApiService {
   constructor() {
+    console.log('🚀 ApiService constructor appelé - Nouvelle instance créée');
+
     // Détection automatique du chemin de base avec debug
     const pathParts = window.location.pathname.split('/').filter(part => part !== '');
 
@@ -13,10 +15,20 @@ class ApiService {
 
     console.log('API Base URL detected:', this.baseUrl);
 
-    // Récupérer le token depuis localStorage avec debug
+    // Récupérer le token depuis localStorage avec debug détaillé
     this.token = localStorage.getItem('auth_token');
     console.log('🔑 Token récupéré depuis localStorage:', this.token ? 'Présent' : 'Absent');
-    console.log('🔑 Contenu localStorage complet:', JSON.stringify(localStorage));
+    if (this.token) {
+      console.log('🔑 Token (premiers 50 chars):', this.token.substring(0, 50));
+    }
+
+    // Vérifier tout le localStorage
+    console.log('🔑 Nombre d\'items dans localStorage:', localStorage.length);
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      const value = localStorage.getItem(key);
+      console.log(`🔑 localStorage[${key}]:`, value ? value.substring(0, 50) + '...' : 'null');
+    }
   }
 
   setToken(token) {

@@ -52,6 +52,13 @@ var App = function App() {
     _useState8 = _slicedToArray(_useState7, 2),
     showAdmin = _useState8[0],
     setShowAdmin = _useState8[1];
+
+  // Debug des changements d'état utilisateur
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    console.log('👤 État utilisateur mis à jour:', user);
+    console.log('👤 User role:', user === null || user === void 0 ? void 0 : user.role);
+    console.log('👤 User active:', user ? true : false);
+  }, [user]);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     checkAuth();
   }, []);
@@ -62,29 +69,44 @@ var App = function App() {
         while (1) switch (_context.p = _context.n) {
           case 0:
             _context.p = 0;
-            console.log('🔐 Vérification auth - Token:', _services_api_js__WEBPACK_IMPORTED_MODULE_5__["default"].token ? 'Présent' : 'Absent');
+            console.log('🔐 Démarrage checkAuth');
+            console.log('🔐 Vérification auth - api.token:', _services_api_js__WEBPACK_IMPORTED_MODULE_5__["default"].token ? 'Présent' : 'Absent');
             console.log('🔐 Token localStorage:', localStorage.getItem('auth_token') ? 'Présent' : 'Absent');
-            _context.n = 1;
-            return _services_api_js__WEBPACK_IMPORTED_MODULE_5__["default"].get('/auth/me');
-          case 1:
-            response = _context.v;
-            console.log('✅ Auth réussie:', response);
-            setUser(response);
-            _context.n = 3;
-            break;
-          case 2:
-            _context.p = 2;
-            _t = _context.v;
-            console.log('❌ Non authentifié:', _t.message);
+
+            // Si pas de token, pas la peine d'essayer
+            if (_services_api_js__WEBPACK_IMPORTED_MODULE_5__["default"].token) {
+              _context.n = 1;
+              break;
+            }
+            console.log('❌ Aucun token disponible, déconnexion');
             setUser(null);
+            setLoading(false);
+            return _context.a(2);
+          case 1:
+            console.log('🔐 Appel de /auth/me...');
+            _context.n = 2;
+            return _services_api_js__WEBPACK_IMPORTED_MODULE_5__["default"].get('/auth/me');
+          case 2:
+            response = _context.v;
+            console.log('✅ Auth réussie - Utilisateur:', response);
+            console.log('✅ User object à définir:', response.user);
+            setUser(response.user);
+            _context.n = 4;
+            break;
           case 3:
             _context.p = 3;
-            setLoading(false);
-            return _context.f(3);
+            _t = _context.v;
+            console.log('❌ Erreur checkAuth:', _t.message);
+            console.log('❌ Détails erreur:', _t);
+            setUser(null);
           case 4:
+            _context.p = 4;
+            setLoading(false);
+            return _context.f(4);
+          case 5:
             return _context.a(2);
         }
-      }, _callee, null, [[0, 2, 3, 4]]);
+      }, _callee, null, [[0, 3, 4, 5]]);
     }));
     return function checkAuth() {
       return _ref.apply(this, arguments);
@@ -1679,6 +1701,8 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
 var ApiService = /*#__PURE__*/function () {
   function ApiService() {
     _classCallCheck(this, ApiService);
+    console.log('🚀 ApiService constructor appelé - Nouvelle instance créée');
+
     // Détection automatique du chemin de base avec debug
     var pathParts = window.location.pathname.split('/').filter(function (part) {
       return part !== '';
@@ -1692,10 +1716,20 @@ var ApiService = /*#__PURE__*/function () {
     }
     console.log('API Base URL detected:', this.baseUrl);
 
-    // Récupérer le token depuis localStorage avec debug
+    // Récupérer le token depuis localStorage avec debug détaillé
     this.token = localStorage.getItem('auth_token');
     console.log('🔑 Token récupéré depuis localStorage:', this.token ? 'Présent' : 'Absent');
-    console.log('🔑 Contenu localStorage complet:', JSON.stringify(localStorage));
+    if (this.token) {
+      console.log('🔑 Token (premiers 50 chars):', this.token.substring(0, 50));
+    }
+
+    // Vérifier tout le localStorage
+    console.log('🔑 Nombre d\'items dans localStorage:', localStorage.length);
+    for (var i = 0; i < localStorage.length; i++) {
+      var key = localStorage.key(i);
+      var value = localStorage.getItem(key);
+      console.log("\uD83D\uDD11 localStorage[".concat(key, "]:"), value ? value.substring(0, 50) + '...' : 'null');
+    }
   }
   return _createClass(ApiService, [{
     key: "setToken",

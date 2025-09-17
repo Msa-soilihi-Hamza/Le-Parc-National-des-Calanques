@@ -11,20 +11,39 @@ const App = () => {
   const [showSignup, setShowSignup] = useState(false);
   const [showAdmin, setShowAdmin] = useState(false);
 
+  // Debug des changements d'état utilisateur
+  useEffect(() => {
+    console.log('👤 État utilisateur mis à jour:', user);
+    console.log('👤 User role:', user?.role);
+    console.log('👤 User active:', user ? true : false);
+  }, [user]);
+
   useEffect(() => {
     checkAuth();
   }, []);
 
   const checkAuth = async () => {
     try {
-      console.log('🔐 Vérification auth - Token:', api.token ? 'Présent' : 'Absent');
+      console.log('🔐 Démarrage checkAuth');
+      console.log('🔐 Vérification auth - api.token:', api.token ? 'Présent' : 'Absent');
       console.log('🔐 Token localStorage:', localStorage.getItem('auth_token') ? 'Présent' : 'Absent');
 
+      // Si pas de token, pas la peine d'essayer
+      if (!api.token) {
+        console.log('❌ Aucun token disponible, déconnexion');
+        setUser(null);
+        setLoading(false);
+        return;
+      }
+
+      console.log('🔐 Appel de /auth/me...');
       const response = await api.get('/auth/me');
-      console.log('✅ Auth réussie:', response);
-      setUser(response);
+      console.log('✅ Auth réussie - Utilisateur:', response);
+      console.log('✅ User object à définir:', response.user);
+      setUser(response.user);
     } catch (error) {
-      console.log('❌ Non authentifié:', error.message);
+      console.log('❌ Erreur checkAuth:', error.message);
+      console.log('❌ Détails erreur:', error);
       setUser(null);
     } finally {
       setLoading(false);
