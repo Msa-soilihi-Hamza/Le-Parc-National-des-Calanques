@@ -1,9 +1,17 @@
 // Service API pour communiquer avec le backend PHP
 class ApiService {
   constructor() {
-    // Détection automatique du chemin de base
-    const basePath = window.location.pathname.split('/').slice(0, -1).join('/');
-    this.baseUrl = basePath || '';
+    // Détection automatique du chemin de base avec debug
+    const pathParts = window.location.pathname.split('/').filter(part => part !== '');
+
+    // Si on est dans un sous-dossier du serveur local
+    if (pathParts.length > 0 && !pathParts[0].includes('.')) {
+      this.baseUrl = '/' + pathParts[0];
+    } else {
+      this.baseUrl = '';
+    }
+
+    console.log('API Base URL detected:', this.baseUrl);
     this.token = localStorage.getItem('auth_token');
   }
 
@@ -33,9 +41,20 @@ class ApiService {
     };
 
     try {
+      console.log('Calling API URL:', url);
       const response = await fetch(url, config);
+
+      // Vérifier le type de contenu
+      const contentType = response.headers.get('content-type');
+
+      if (!contentType || !contentType.includes('application/json')) {
+        const textResponse = await response.text();
+        console.error('Response is not JSON:', textResponse.substring(0, 200));
+        throw new Error(`Le serveur a retourné du ${contentType || 'contenu non-JSON'} au lieu de JSON. Vérifiez l'URL de l'API.`);
+      }
+
       const data = await response.json();
-      
+
       if (!response.ok) {
         // Si le token est invalide, le supprimer et permettre à l'utilisateur de se reconnecter
         if (response.status === 401 && (data.message?.includes('token') || data.message?.includes('signature'))) {
@@ -44,7 +63,7 @@ class ApiService {
         }
         throw new Error(data.message || 'Erreur API');
       }
-      
+
       return data;
     } catch (error) {
       console.error('Erreur API:', error);
