@@ -12,16 +12,26 @@ class ApiService {
     }
 
     console.log('API Base URL detected:', this.baseUrl);
+
+    // Récupérer le token depuis localStorage avec debug
     this.token = localStorage.getItem('auth_token');
+    console.log('🔑 Token récupéré depuis localStorage:', this.token ? 'Présent' : 'Absent');
+    console.log('🔑 Contenu localStorage complet:', JSON.stringify(localStorage));
   }
 
   setToken(token) {
+    console.log('🔑 setToken appelé avec:', token ? 'Token présent' : 'Token null');
     this.token = token;
     if (token) {
       localStorage.setItem('auth_token', token);
+      console.log('🔑 Token sauvegardé dans localStorage');
     } else {
       localStorage.removeItem('auth_token');
+      console.log('🔑 Token supprimé de localStorage');
     }
+    // Vérifier que le token a bien été sauvegardé
+    const savedToken = localStorage.getItem('auth_token');
+    console.log('🔑 Vérification - Token dans localStorage:', savedToken ? 'Présent' : 'Absent');
   }
 
   clearAuthData() {
@@ -44,16 +54,19 @@ class ApiService {
       console.log('Calling API URL:', url);
       const response = await fetch(url, config);
 
-      // Vérifier le type de contenu
-      const contentType = response.headers.get('content-type');
+      // Lire la réponse en tant que texte d'abord
+      const textResponse = await response.text();
 
-      if (!contentType || !contentType.includes('application/json')) {
-        const textResponse = await response.text();
-        console.error('Response is not JSON:', textResponse.substring(0, 200));
+      // Essayer de parser en JSON
+      let data;
+      try {
+        data = JSON.parse(textResponse);
+      } catch (jsonError) {
+        const contentType = response.headers.get('content-type');
+        console.error('Response is not valid JSON:', textResponse.substring(0, 200));
+        console.error('Content-Type:', contentType);
         throw new Error(`Le serveur a retourné du ${contentType || 'contenu non-JSON'} au lieu de JSON. Vérifiez l'URL de l'API.`);
       }
-
-      const data = await response.json();
 
       if (!response.ok) {
         // Si le token est invalide, le supprimer et permettre à l'utilisateur de se reconnecter
@@ -77,12 +90,17 @@ class ApiService {
       method: 'POST',
       body: JSON.stringify({ email, password, remember })
     });
-    
+
+    console.log('🔑 Réponse login complète:', response);
+
     // Stocker le token après connexion réussie
     if (response.tokens && response.tokens.access_token) {
+      console.log('🔑 Token reçu du serveur:', response.tokens.access_token.substring(0, 20) + '...');
       this.setToken(response.tokens.access_token);
+    } else {
+      console.log('❌ Aucun token reçu dans la réponse de login');
     }
-    
+
     return response;
   }
 

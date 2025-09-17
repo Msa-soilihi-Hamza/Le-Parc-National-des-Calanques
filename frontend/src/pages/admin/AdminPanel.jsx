@@ -11,11 +11,14 @@ const AdminPanel = ({ user }) => {
 
   const loadUsers = async () => {
     try {
+      console.log('🔄 Chargement des utilisateurs...');
       const response = await api.getUsers();
+      console.log('✅ Réponse API reçue:', response);
+      console.log('📊 Données utilisateurs:', response.data?.data);
       setUsers(response.data.data);
       setLoading(false);
     } catch (error) {
-      console.error('Erreur:', error);
+      console.error('❌ Erreur lors du chargement:', error);
       setLoading(false);
     }
   };

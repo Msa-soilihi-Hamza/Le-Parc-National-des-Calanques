@@ -62,17 +62,20 @@ var App = function App() {
         while (1) switch (_context.p = _context.n) {
           case 0:
             _context.p = 0;
+            console.log('🔐 Vérification auth - Token:', _services_api_js__WEBPACK_IMPORTED_MODULE_5__["default"].token ? 'Présent' : 'Absent');
+            console.log('🔐 Token localStorage:', localStorage.getItem('auth_token') ? 'Présent' : 'Absent');
             _context.n = 1;
             return _services_api_js__WEBPACK_IMPORTED_MODULE_5__["default"].get('/auth/me');
           case 1:
             response = _context.v;
+            console.log('✅ Auth réussie:', response);
             setUser(response);
             _context.n = 3;
             break;
           case 2:
             _context.p = 2;
             _t = _context.v;
-            console.log('Non authentifié');
+            console.log('❌ Non authentifié:', _t.message);
             setUser(null);
           case 3:
             _context.p = 3;
@@ -88,6 +91,8 @@ var App = function App() {
     };
   }();
   var handleLogin = function handleLogin(userData) {
+    console.log('🔑 handleLogin appelé avec:', userData);
+    console.log('🔑 Token après login:', _services_api_js__WEBPACK_IMPORTED_MODULE_5__["default"].token ? 'Présent' : 'Absent');
     setUser(userData);
     setShowSignup(false);
   };
@@ -1527,15 +1532,18 @@ var AdminPanel = function AdminPanel(_ref) {
   }, []);
   var loadUsers = /*#__PURE__*/function () {
     var _ref2 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee() {
-      var response, _t;
+      var _response$data, response, _t;
       return _regenerator().w(function (_context) {
         while (1) switch (_context.p = _context.n) {
           case 0:
             _context.p = 0;
+            console.log('🔄 Chargement des utilisateurs...');
             _context.n = 1;
             return _services_api_js__WEBPACK_IMPORTED_MODULE_1__["default"].getUsers();
           case 1:
             response = _context.v;
+            console.log('✅ Réponse API reçue:', response);
+            console.log('📊 Données utilisateurs:', (_response$data = response.data) === null || _response$data === void 0 ? void 0 : _response$data.data);
             setUsers(response.data.data);
             setLoading(false);
             _context.n = 3;
@@ -1543,7 +1551,7 @@ var AdminPanel = function AdminPanel(_ref) {
           case 2:
             _context.p = 2;
             _t = _context.v;
-            console.error('Erreur:', _t);
+            console.error('❌ Erreur lors du chargement:', _t);
             setLoading(false);
           case 3:
             return _context.a(2);
@@ -1683,17 +1691,27 @@ var ApiService = /*#__PURE__*/function () {
       this.baseUrl = '';
     }
     console.log('API Base URL detected:', this.baseUrl);
+
+    // Récupérer le token depuis localStorage avec debug
     this.token = localStorage.getItem('auth_token');
+    console.log('🔑 Token récupéré depuis localStorage:', this.token ? 'Présent' : 'Absent');
+    console.log('🔑 Contenu localStorage complet:', JSON.stringify(localStorage));
   }
   return _createClass(ApiService, [{
     key: "setToken",
     value: function setToken(token) {
+      console.log('🔑 setToken appelé avec:', token ? 'Token présent' : 'Token null');
       this.token = token;
       if (token) {
         localStorage.setItem('auth_token', token);
+        console.log('🔑 Token sauvegardé dans localStorage');
       } else {
         localStorage.removeItem('auth_token');
+        console.log('🔑 Token supprimé de localStorage');
       }
+      // Vérifier que le token a bien été sauvegardé
+      var savedToken = localStorage.getItem('auth_token');
+      console.log('🔑 Vérification - Token dans localStorage:', savedToken ? 'Présent' : 'Absent');
     }
   }, {
     key: "clearAuthData",
@@ -1709,13 +1727,14 @@ var ApiService = /*#__PURE__*/function () {
           url,
           config,
           response,
-          contentType,
           textResponse,
           data,
+          contentType,
           _data$message,
           _data$message2,
           _args = arguments,
-          _t;
+          _t,
+          _t2;
         return _regenerator().w(function (_context) {
           while (1) switch (_context.p = _context.n) {
             case 0:
@@ -1734,25 +1753,24 @@ var ApiService = /*#__PURE__*/function () {
               return fetch(url, config);
             case 2:
               response = _context.v;
-              // Vérifier le type de contenu
-              contentType = response.headers.get('content-type');
-              if (!(!contentType || !contentType.includes('application/json'))) {
-                _context.n = 4;
-                break;
-              }
               _context.n = 3;
               return response.text();
             case 3:
               textResponse = _context.v;
-              console.error('Response is not JSON:', textResponse.substring(0, 200));
-              throw new Error("Le serveur a retourn\xE9 du ".concat(contentType || 'contenu non-JSON', " au lieu de JSON. V\xE9rifiez l'URL de l'API."));
-            case 4:
-              _context.n = 5;
-              return response.json();
+              _context.p = 4;
+              data = JSON.parse(textResponse);
+              _context.n = 6;
+              break;
             case 5:
-              data = _context.v;
+              _context.p = 5;
+              _t = _context.v;
+              contentType = response.headers.get('content-type');
+              console.error('Response is not valid JSON:', textResponse.substring(0, 200));
+              console.error('Content-Type:', contentType);
+              throw new Error("Le serveur a retourn\xE9 du ".concat(contentType || 'contenu non-JSON', " au lieu de JSON. V\xE9rifiez l'URL de l'API."));
+            case 6:
               if (response.ok) {
-                _context.n = 6;
+                _context.n = 7;
                 break;
               }
               // Si le token est invalide, le supprimer et permettre à l'utilisateur de se reconnecter
@@ -1761,17 +1779,17 @@ var ApiService = /*#__PURE__*/function () {
                 this.setToken(null);
               }
               throw new Error(data.message || 'Erreur API');
-            case 6:
-              return _context.a(2, data);
             case 7:
-              _context.p = 7;
-              _t = _context.v;
-              console.error('Erreur API:', _t);
-              throw _t;
+              return _context.a(2, data);
             case 8:
+              _context.p = 8;
+              _t2 = _context.v;
+              console.error('Erreur API:', _t2);
+              throw _t2;
+            case 9:
               return _context.a(2);
           }
-        }, _callee, this, [[1, 7]]);
+        }, _callee, this, [[4, 5], [1, 8]]);
       }));
       function request(_x) {
         return _request.apply(this, arguments);
@@ -1800,9 +1818,14 @@ var ApiService = /*#__PURE__*/function () {
               });
             case 1:
               response = _context2.v;
+              console.log('🔑 Réponse login complète:', response);
+
               // Stocker le token après connexion réussie
               if (response.tokens && response.tokens.access_token) {
+                console.log('🔑 Token reçu du serveur:', response.tokens.access_token.substring(0, 20) + '...');
                 this.setToken(response.tokens.access_token);
+              } else {
+                console.log('❌ Aucun token reçu dans la réponse de login');
               }
               return _context2.a(2, response);
           }

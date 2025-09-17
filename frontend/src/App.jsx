@@ -17,10 +17,14 @@ const App = () => {
 
   const checkAuth = async () => {
     try {
+      console.log('🔐 Vérification auth - Token:', api.token ? 'Présent' : 'Absent');
+      console.log('🔐 Token localStorage:', localStorage.getItem('auth_token') ? 'Présent' : 'Absent');
+
       const response = await api.get('/auth/me');
+      console.log('✅ Auth réussie:', response);
       setUser(response);
     } catch (error) {
-      console.log('Non authentifié');
+      console.log('❌ Non authentifié:', error.message);
       setUser(null);
     } finally {
       setLoading(false);
@@ -28,6 +32,8 @@ const App = () => {
   };
 
   const handleLogin = (userData) => {
+    console.log('🔑 handleLogin appelé avec:', userData);
+    console.log('🔑 Token après login:', api.token ? 'Présent' : 'Absent');
     setUser(userData);
     setShowSignup(false);
   };
