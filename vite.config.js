@@ -5,7 +5,7 @@ import path from 'path'
 export default defineConfig({
   plugins: [react()],
   css: {
-    postcss: './frontend/postcss.config.js'
+    postcss: './postcss.config.js'
   },
   root: './frontend',
   build: {
