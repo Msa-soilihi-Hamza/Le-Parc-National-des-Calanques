@@ -13,7 +13,7 @@ export default defineConfig({
     emptyOutDir: true
   },
   server: {
-    port: 3000,
+    port: 3004,
     host: true,
     hmr: true,  // Réactiver le hot module reload
     watch: {
