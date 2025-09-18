@@ -3,6 +3,7 @@ import LoginForm from './components/auth/LoginForm.jsx';
 import SignupPage from './components/auth/SignupPage.jsx';
 import UserProfile from './components/auth/UserProfile.jsx';
 import EmailVerification from './components/auth/EmailVerification.jsx';
+import Header from './components/layout/Header.jsx';
 import api from './services/api.js';
 
 const App = () => {
@@ -99,27 +100,7 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="bg-primary text-primary-foreground">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold">
-              🏔️ Parc National des Calanques
-            </h1>
-            {user && (
-              <div className="flex items-center gap-4">
-                <span>Bonjour {user.prenom}</span>
-                <button 
-                  onClick={handleLogout}
-                  className="px-3 py-1 text-sm bg-transparent border border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10 rounded-md transition-colors"
-                >
-                  Déconnexion
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      </header>
+      <Header user={user} onLogout={handleLogout} />
 
       {/* Main Content */}
       <main>
