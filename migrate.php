@@ -81,7 +81,7 @@ class Migration {
 
         echo "=== DÉBUT DES MIGRATIONS ===\n";
         echo "Base de données: le-parc-national-des-calanques\n";
-        echo "Port: 3308\n\n";
+        echo "Port: 3306\n\n";
 
         foreach ($migrationFiles as $migrationFile) {
             if (!$this->runMigration($migrationFile)) {

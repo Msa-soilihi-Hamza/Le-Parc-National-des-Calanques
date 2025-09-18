@@ -9,16 +9,29 @@ const App = () => {
   const [loading, setLoading] = useState(true);
   const [showSignup, setShowSignup] = useState(false);
 
+  // Debug du state user
+  console.log('🔄 App render - user:', user ? 'connecté' : 'non connecté', 'loading:', loading);
+
   useEffect(() => {
     checkAuth();
   }, []);
 
   const checkAuth = async () => {
+    // Debug du token
+    const storedToken = localStorage.getItem('auth_token');
+    console.log('🔍 Token dans localStorage:', storedToken ? 'présent' : 'absent');
+
     try {
       const response = await api.get('/auth/me');
-      setUser(response);
+      console.log('✅ Auth réussie:', response);
+
+      // Extraire l'objet user de la réponse
+      const userData = response.user || response;
+      console.log('👤 Données utilisateur extraites:', userData);
+
+      setUser(userData);
     } catch (error) {
-      console.log('Non authentifié');
+      console.log('❌ Non authentifié:', error.response?.status, error.response?.data);
       setUser(null);
     } finally {
       setLoading(false);
@@ -26,7 +39,9 @@ const App = () => {
   };
 
   const handleLogin = (userData) => {
-    setUser(userData);
+    // Extraire l'objet user si la réponse est wrappée
+    const user = userData.user || userData;
+    setUser(user);
     setShowSignup(false);
   };
 
@@ -39,9 +54,11 @@ const App = () => {
       setShowSignup(false); // Retourner à la page de login
       return;
     }
-    
+
     // Si les tokens sont présents, connecter normalement l'utilisateur
-    setUser(userData);
+    // Extraire l'objet user si la réponse est wrappée
+    const user = userData.user || userData;
+    setUser(user);
     setShowSignup(false);
   };
 

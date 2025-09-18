@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import api from '../services/api.js';
+import api from '../../services/api.js';
 
 const UserProfile = ({ user: initialUser, onUpdate }) => {
   const [user, setUser] = useState(initialUser || null);
   const [loading, setLoading] = useState(!initialUser);
   const [error, setError] = useState(null);
+
 
   useEffect(() => {
     if (!initialUser) {
@@ -18,7 +19,9 @@ const UserProfile = ({ user: initialUser, onUpdate }) => {
     try {
       setLoading(true);
       const response = await api.get('/auth/me');
-      setUser(response);
+      // Extraire l'objet user de la réponse
+      const userData = response.user || response;
+      setUser(userData);
       setError(null);
     } catch (err) {
       setError(err.message);
