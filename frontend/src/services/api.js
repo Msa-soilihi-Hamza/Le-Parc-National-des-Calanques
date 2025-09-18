@@ -52,8 +52,10 @@ class ApiService {
   setToken(token) {
     if (token) {
       localStorage.setItem('auth_token', token);
+      console.log('💾 Token stocké:', token.substring(0, 20) + '...');
     } else {
       localStorage.removeItem('auth_token');
+      console.log('🗑️ Token supprimé');
     }
   }
 
@@ -80,15 +82,21 @@ class ApiService {
 
   // Authentification
   async login(email, password, remember = false) {
+    console.log('🔐 Tentative de login...');
     const response = await this.post('/auth/login', {
       email,
       password,
       remember
     });
 
+    console.log('📥 Réponse login:', response);
+
     // Stocker le token après connexion réussie
     if (response.tokens?.access_token) {
       this.setToken(response.tokens.access_token);
+      console.log('✅ Token sauvegardé avec succès');
+    } else {
+      console.log('❌ Pas de token dans la réponse');
     }
 
     return response;

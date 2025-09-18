@@ -6,6 +6,7 @@ const UserProfile = ({ user: initialUser, onUpdate }) => {
   const [loading, setLoading] = useState(!initialUser);
   const [error, setError] = useState(null);
 
+
   useEffect(() => {
     if (!initialUser) {
       loadUserProfile();
@@ -18,7 +19,9 @@ const UserProfile = ({ user: initialUser, onUpdate }) => {
     try {
       setLoading(true);
       const response = await api.get('/auth/me');
-      setUser(response);
+      // Extraire l'objet user de la réponse
+      const userData = response.user || response;
+      setUser(userData);
       setError(null);
     } catch (err) {
       setError(err.message);
