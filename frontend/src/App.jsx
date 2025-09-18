@@ -2,12 +2,19 @@ import React, { useState, useEffect } from 'react';
 import LoginForm from './components/auth/LoginForm.jsx';
 import SignupPage from './components/auth/SignupPage.jsx';
 import UserProfile from './components/auth/UserProfile.jsx';
+import EmailVerification from './components/auth/EmailVerification.jsx';
 import api from './services/api.js';
 
 const App = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showSignup, setShowSignup] = useState(false);
+
+  // Détecter si nous sommes sur la page de vérification d'email
+  const isEmailVerificationPage = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.has('token') && urlParams.has('verify');
+  };
 
   // Debug du state user
   console.log('🔄 App render - user:', user ? 'connecté' : 'non connecté', 'loading:', loading);
@@ -76,6 +83,11 @@ const App = () => {
 
   const switchToLogin = () => setShowSignup(false);
   const switchToSignup = () => setShowSignup(true);
+
+  // Si c'est la page de vérification d'email, afficher directement le composant
+  if (isEmailVerificationPage()) {
+    return <EmailVerification />;
+  }
 
   if (loading) {
     return (

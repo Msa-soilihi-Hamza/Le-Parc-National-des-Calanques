@@ -245,4 +245,48 @@ class AuthController
 
         include $templatePath;
     }
+
+    /**
+     * Vérifie l'email via token et retourne JSON
+     */
+    public function verifyEmail(): void
+    {
+        header('Content-Type: application/json');
+
+        try {
+            $token = $_GET['token'] ?? null;
+
+            if (!$token) {
+                http_response_code(400);
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Token de vérification manquant.'
+                ]);
+                return;
+            }
+
+            $result = $this->authService->verifyEmailByToken($token);
+
+            http_response_code(200);
+            echo json_encode([
+                'success' => true,
+                'message' => $result['message'],
+                'user' => $result['user']
+            ]);
+
+        } catch (AuthException $e) {
+            http_response_code(400);
+            echo json_encode([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        } catch (\Exception $e) {
+            error_log("Erreur lors de la vérification d'email : " . $e->getMessage());
+            http_response_code(500);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Une erreur est survenue lors de la vérification. Veuillez réessayer plus tard.'
+            ]);
+        }
+    }
 }

@@ -55,7 +55,9 @@ class EmailService
             
             // URL de vérification depuis les variables d'environnement
             $baseUrl = EnvLoader::get('APP_URL', 'http://localhost/Le-Parc-National-des-Calanques');
-            $verificationUrl = $baseUrl . "/verify-email.php?token=" . urlencode($verificationToken);
+            // Frontend React sur port 3004
+            $frontendUrl = 'http://localhost:3004';
+            $verificationUrl = $frontendUrl . "/?token=" . urlencode($verificationToken) . "&verify=1";
             
             // Template HTML
             $htmlBody = $this->getVerificationEmailTemplate($name, $verificationUrl);

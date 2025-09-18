@@ -119,6 +119,13 @@ try {
             }
             break;
 
+        case '/api/auth/verify-email':
+        case '/auth/verify-email':
+            if ($requestMethod === 'GET') {
+                $apiController->verifyEmail();
+            }
+            break;
+
         case '/api/profile':
         case '/profile':
             if (in_array($requestMethod, ['GET', 'PUT'])) {

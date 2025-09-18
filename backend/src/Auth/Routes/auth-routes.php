@@ -28,6 +28,6 @@ return [
     'POST /api/auth/reset-password' => [AuthController::class, 'resetPassword'],
 
     // Vérification compte
-    'POST /api/auth/verify-email' => [AuthController::class, 'verifyEmail'],
+    'GET /api/auth/verify-email' => [AuthController::class, 'verifyEmail'],
     'POST /api/auth/resend-verification' => [AuthController::class, 'resendVerification']
 ];

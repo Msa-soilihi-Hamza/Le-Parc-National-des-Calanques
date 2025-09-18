@@ -128,6 +128,11 @@ class ApiService {
     }
   }
 
+  // Vérification email
+  async verifyEmail(token) {
+    return this.get(`/auth/verify-email?token=${encodeURIComponent(token)}`);
+  }
+
   // Profil utilisateur
   async getUserProfile() {
     return this.get('/auth/me');
