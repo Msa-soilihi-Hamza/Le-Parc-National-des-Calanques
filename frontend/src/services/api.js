@@ -183,6 +183,24 @@ class ApiService {
   async deleteUser(id) {
     return this.request(`/admin/users/${id}`, { method: 'DELETE' });
   }
+
+  async createUser(userData) {
+    return this.request('/admin/users', {
+      method: 'POST',
+      body: JSON.stringify(userData)
+    });
+  }
+
+  async updateUser(id, userData) {
+    return this.request(`/admin/users/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(userData)
+    });
+  }
+
+  async getUser(id) {
+    return this.request(`/admin/users/${id}`, { method: 'GET' });
+  }
 }
 
 // Instance globale

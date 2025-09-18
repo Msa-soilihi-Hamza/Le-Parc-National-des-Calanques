@@ -1527,6 +1527,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _services_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/api.js */ "./frontend/src/services/api.js");
+Object(function webpackMissingModule() { var e = new Error("Cannot find module '../../react/components/ui/dialog'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 function _regenerator() { /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */ var e, t, r = "function" == typeof Symbol ? Symbol : {}, n = r.iterator || "@@iterator", o = r.toStringTag || "@@toStringTag"; function i(r, n, o, i) { var c = n && n.prototype instanceof Generator ? n : Generator, u = Object.create(c.prototype); return _regeneratorDefine2(u, "_invoke", function (r, n, o) { var i, c, u, f = 0, p = o || [], y = !1, G = { p: 0, n: 0, v: e, a: d, f: d.bind(e, 4), d: function d(t, r) { return i = t, c = 0, u = e, G.n = r, a; } }; function d(r, n) { for (c = r, u = n, t = 0; !y && f && !o && t < p.length; t++) { var o, i = p[t], d = G.p, l = i[2]; r > 3 ? (o = l === n) && (u = i[(c = i[4]) ? 5 : (c = 3, 3)], i[4] = i[5] = e) : i[0] <= d && ((o = r < 2 && d < i[1]) ? (c = 0, G.v = n, G.n = i[1]) : d < l && (o = r < 3 || i[0] > n || n > l) && (i[4] = r, i[5] = n, G.n = l, c = 0)); } if (o || r > 1) return a; throw y = !0, n; } return function (o, p, l) { if (f > 1) throw TypeError("Generator is already running"); for (y && 1 === p && d(p, l), c = p, u = l; (t = c < 2 ? e : u) || !y;) { i || (c ? c < 3 ? (c > 1 && (G.n = -1), d(c, u)) : G.n = u : G.v = u); try { if (f = 2, i) { if (c || (o = "next"), t = i[o]) { if (!(t = t.call(i, u))) throw TypeError("iterator result is not an object"); if (!t.done) return t; u = t.value, c < 2 && (c = 0); } else 1 === c && (t = i["return"]) && t.call(i), c < 2 && (u = TypeError("The iterator does not provide a '" + o + "' method"), c = 1); i = e; } else if ((t = (y = G.n < 0) ? u : r.call(n, G)) !== a) break; } catch (t) { i = e, c = 1, u = t; } finally { f = 1; } } return { value: t, done: y }; }; }(r, o, i), !0), u; } var a = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} t = Object.getPrototypeOf; var c = [][n] ? t(t([][n]())) : (_regeneratorDefine2(t = {}, n, function () { return this; }), t), u = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(c); function f(e) { return Object.setPrototypeOf ? Object.setPrototypeOf(e, GeneratorFunctionPrototype) : (e.__proto__ = GeneratorFunctionPrototype, _regeneratorDefine2(e, o, "GeneratorFunction")), e.prototype = Object.create(u), e; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, _regeneratorDefine2(u, "constructor", GeneratorFunctionPrototype), _regeneratorDefine2(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = "GeneratorFunction", _regeneratorDefine2(GeneratorFunctionPrototype, o, "GeneratorFunction"), _regeneratorDefine2(u), _regeneratorDefine2(u, o, "Generator"), _regeneratorDefine2(u, n, function () { return this; }), _regeneratorDefine2(u, "toString", function () { return "[object Generator]"; }), (_regenerator = function _regenerator() { return { w: i, m: f }; })(); }
 function _regeneratorDefine2(e, r, n, t) { var i = Object.defineProperty; try { i({}, "", {}); } catch (e) { i = 0; } _regeneratorDefine2 = function _regeneratorDefine(e, r, n, t) { function o(r, n) { _regeneratorDefine2(e, r, function (e) { return this._invoke(r, n, e); }); } r ? i ? i(e, r, { value: n, enumerable: !t, configurable: !t, writable: !t }) : e[r] = n : (o("next", 0), o("throw", 1), o("return", 2)); }, _regeneratorDefine2(e, r, n, t); }
 function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.value; } catch (n) { return void e(n); } i.done ? t(u) : Promise.resolve(u).then(r, o); }
@@ -1539,6 +1546,7 @@ function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" !=
 function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 
 
+
 var AdminPanel = function AdminPanel(_ref) {
   var user = _ref.user;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
@@ -1549,6 +1557,28 @@ var AdminPanel = function AdminPanel(_ref) {
     _useState4 = _slicedToArray(_useState3, 2),
     loading = _useState4[0],
     setLoading = _useState4[1];
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState6 = _slicedToArray(_useState5, 2),
+    showCreateModal = _useState6[0],
+    setShowCreateModal = _useState6[1];
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState8 = _slicedToArray(_useState7, 2),
+    showEditModal = _useState8[0],
+    setShowEditModal = _useState8[1];
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+    _useState0 = _slicedToArray(_useState9, 2),
+    editingUser = _useState0[0],
+    setEditingUser = _useState0[1];
+  var _useState1 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
+      email: '',
+      password: '',
+      nom: '',
+      prenom: '',
+      role: 'user'
+    }),
+    _useState10 = _slicedToArray(_useState1, 2),
+    formData = _useState10[0],
+    setFormData = _useState10[1];
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     loadUsers();
   }, []);
@@ -1610,6 +1640,142 @@ var AdminPanel = function AdminPanel(_ref) {
       return _ref3.apply(this, arguments);
     };
   }();
+  var handleCreate = /*#__PURE__*/function () {
+    var _ref4 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3(e) {
+      var _t3;
+      return _regenerator().w(function (_context3) {
+        while (1) switch (_context3.p = _context3.n) {
+          case 0:
+            e.preventDefault();
+            _context3.p = 1;
+            _context3.n = 2;
+            return _services_api_js__WEBPACK_IMPORTED_MODULE_1__["default"].createUser(formData);
+          case 2:
+            setShowCreateModal(false);
+            setFormData({
+              email: '',
+              password: '',
+              nom: '',
+              prenom: '',
+              role: 'user'
+            });
+            loadUsers();
+            alert('Utilisateur créé avec succès !');
+            _context3.n = 4;
+            break;
+          case 3:
+            _context3.p = 3;
+            _t3 = _context3.v;
+            alert('Erreur: ' + _t3.message);
+          case 4:
+            return _context3.a(2);
+        }
+      }, _callee3, null, [[1, 3]]);
+    }));
+    return function handleCreate(_x3) {
+      return _ref4.apply(this, arguments);
+    };
+  }();
+  var handleEdit = /*#__PURE__*/function () {
+    var _ref5 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4(e) {
+      var _t4;
+      return _regenerator().w(function (_context4) {
+        while (1) switch (_context4.p = _context4.n) {
+          case 0:
+            e.preventDefault();
+            _context4.p = 1;
+            _context4.n = 2;
+            return _services_api_js__WEBPACK_IMPORTED_MODULE_1__["default"].updateUser(editingUser.id, formData);
+          case 2:
+            setShowEditModal(false);
+            setEditingUser(null);
+            setFormData({
+              email: '',
+              password: '',
+              nom: '',
+              prenom: '',
+              role: 'user'
+            });
+            loadUsers();
+            alert('Utilisateur modifié avec succès !');
+            _context4.n = 4;
+            break;
+          case 3:
+            _context4.p = 3;
+            _t4 = _context4.v;
+            alert('Erreur: ' + _t4.message);
+          case 4:
+            return _context4.a(2);
+        }
+      }, _callee4, null, [[1, 3]]);
+    }));
+    return function handleEdit(_x4) {
+      return _ref5.apply(this, arguments);
+    };
+  }();
+  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState12 = _slicedToArray(_useState11, 2),
+    showDeleteModal = _useState12[0],
+    setShowDeleteModal = _useState12[1];
+  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+    _useState14 = _slicedToArray(_useState13, 2),
+    userToDelete = _useState14[0],
+    setUserToDelete = _useState14[1];
+  var handleDelete = /*#__PURE__*/function () {
+    var _ref6 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee5() {
+      var _t5;
+      return _regenerator().w(function (_context5) {
+        while (1) switch (_context5.p = _context5.n) {
+          case 0:
+            _context5.p = 0;
+            _context5.n = 1;
+            return _services_api_js__WEBPACK_IMPORTED_MODULE_1__["default"].deleteUser(userToDelete.id);
+          case 1:
+            loadUsers();
+            alert('Utilisateur supprimé avec succès !');
+            setShowDeleteModal(false);
+            setUserToDelete(null);
+            _context5.n = 3;
+            break;
+          case 2:
+            _context5.p = 2;
+            _t5 = _context5.v;
+            alert('Erreur: ' + _t5.message);
+          case 3:
+            return _context5.a(2);
+        }
+      }, _callee5, null, [[0, 2]]);
+    }));
+    return function handleDelete() {
+      return _ref6.apply(this, arguments);
+    };
+  }();
+  var openDeleteModal = function openDeleteModal(user) {
+    setUserToDelete(user);
+    setShowDeleteModal(true);
+  };
+  var openEditModal = function openEditModal(u) {
+    setEditingUser(u);
+    setFormData({
+      email: u.email,
+      password: '',
+      // Laisser vide pour ne pas changer
+      nom: u.last_name,
+      prenom: u.first_name,
+      role: u.role
+    });
+    setShowEditModal(true);
+  };
+  var resetForm = function resetForm() {
+    setFormData({
+      email: '',
+      password: '',
+      nom: '',
+      prenom: '',
+      role: 'user'
+    });
+    setEditingUser(null);
+  };
   if (loading) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       className: "flex items-center justify-center min-h-[400px]"
@@ -1623,11 +1789,18 @@ var AdminPanel = function AdminPanel(_ref) {
     className: "bg-white overflow-hidden shadow rounded-lg"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "px-4 py-5 sm:p-6"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex justify-between items-center"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", {
     className: "text-2xl font-bold text-gray-900"
   }, "\uD83D\uDC51 Administration"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
     className: "text-gray-500"
-  }, users.length, " utilisateurs"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  }, users.length, " utilisateurs")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    onClick: function onClick() {
+      return setShowCreateModal(true);
+    },
+    className: "px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+  }, "\u2795 Cr\xE9er utilisateur")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "bg-white shadow rounded-lg overflow-hidden"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("table", {
     className: "min-w-full divide-y divide-gray-200"
@@ -1662,13 +1835,216 @@ var AdminPanel = function AdminPanel(_ref) {
       className: "px-2 py-1 text-xs font-medium rounded-full ".concat(u.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800')
     }, u.is_active ? '✓ Actif' : '✗ Inactif')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
       className: "px-6 py-4 whitespace-nowrap text-sm font-medium"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      className: "flex space-x-2"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+      onClick: function onClick() {
+        return openEditModal(u);
+      },
+      className: "px-3 py-1 text-xs rounded bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors"
+    }, "\u270F\uFE0F Modifier"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
       onClick: function onClick() {
         return handleToggle(u.id, u.is_active ? 'deactivate' : 'activate');
       },
-      className: "mr-2 px-3 py-1 text-xs rounded transition-colors ".concat(u.is_active ? 'bg-red-100 text-red-700 hover:bg-red-200' : 'bg-green-100 text-green-700 hover:bg-green-200')
-    }, u.is_active ? 'Désactiver' : 'Activer')));
-  })))));
+      className: "px-3 py-1 text-xs rounded transition-colors ".concat(u.is_active ? 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200' : 'bg-green-100 text-green-700 hover:bg-green-200')
+    }, u.is_active ? '⏸️ Désactiver' : '▶️ Activer'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+      onClick: function onClick() {
+        return openDeleteModal(u);
+      },
+      className: "px-3 py-1 text-xs rounded bg-red-100 text-red-700 hover:bg-red-200 transition-colors"
+    }, "\uD83D\uDDD1\uFE0F Supprimer"))));
+  })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Object(function webpackMissingModule() { var e = new Error("Cannot find module '../../react/components/ui/dialog'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()), {
+    open: showCreateModal,
+    onOpenChange: setShowCreateModal
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Object(function webpackMissingModule() { var e = new Error("Cannot find module '../../react/components/ui/dialog'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()), {
+    className: "sm:max-w-md"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Object(function webpackMissingModule() { var e = new Error("Cannot find module '../../react/components/ui/dialog'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Object(function webpackMissingModule() { var e = new Error("Cannot find module '../../react/components/ui/dialog'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()), null, "\u2795 Cr\xE9er un utilisateur")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", {
+    onSubmit: handleCreate
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "space-y-4"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+    className: "block text-sm font-medium text-gray-700"
+  }, "Email"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    type: "email",
+    required: true,
+    value: formData.email,
+    onChange: function onChange(e) {
+      return setFormData(_objectSpread(_objectSpread({}, formData), {}, {
+        email: e.target.value
+      }));
+    },
+    className: "mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+    className: "block text-sm font-medium text-gray-700"
+  }, "Mot de passe"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    type: "password",
+    required: true,
+    value: formData.password,
+    onChange: function onChange(e) {
+      return setFormData(_objectSpread(_objectSpread({}, formData), {}, {
+        password: e.target.value
+      }));
+    },
+    className: "mt-1 block w-full border border-gray-300 rounded-md px-3 py-2",
+    placeholder: "Minimum 12 caract\xE8res"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+    className: "block text-sm font-medium text-gray-700"
+  }, "Pr\xE9nom"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    type: "text",
+    required: true,
+    value: formData.prenom,
+    onChange: function onChange(e) {
+      return setFormData(_objectSpread(_objectSpread({}, formData), {}, {
+        prenom: e.target.value
+      }));
+    },
+    className: "mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+    className: "block text-sm font-medium text-gray-700"
+  }, "Nom"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    type: "text",
+    required: true,
+    value: formData.nom,
+    onChange: function onChange(e) {
+      return setFormData(_objectSpread(_objectSpread({}, formData), {}, {
+        nom: e.target.value
+      }));
+    },
+    className: "mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+    className: "block text-sm font-medium text-gray-700"
+  }, "R\xF4le"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("select", {
+    value: formData.role,
+    onChange: function onChange(e) {
+      return setFormData(_objectSpread(_objectSpread({}, formData), {}, {
+        role: e.target.value
+      }));
+    },
+    className: "mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("option", {
+    value: "user"
+  }, "\uD83D\uDC64 Utilisateur"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("option", {
+    value: "admin"
+  }, "\uD83D\uDC51 Administrateur")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Object(function webpackMissingModule() { var e = new Error("Cannot find module '../../react/components/ui/dialog'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()), {
+    className: "mt-6"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    type: "button",
+    onClick: function onClick() {
+      setShowCreateModal(false);
+      resetForm();
+    },
+    className: "px-4 py-2 text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50"
+  }, "Annuler"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    type: "submit",
+    className: "px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+  }, "Cr\xE9er"))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Object(function webpackMissingModule() { var e = new Error("Cannot find module '../../react/components/ui/dialog'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()), {
+    open: showEditModal,
+    onOpenChange: setShowEditModal
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Object(function webpackMissingModule() { var e = new Error("Cannot find module '../../react/components/ui/dialog'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()), {
+    className: "sm:max-w-md"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Object(function webpackMissingModule() { var e = new Error("Cannot find module '../../react/components/ui/dialog'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Object(function webpackMissingModule() { var e = new Error("Cannot find module '../../react/components/ui/dialog'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()), null, "\u270F\uFE0F Modifier ", editingUser === null || editingUser === void 0 ? void 0 : editingUser.full_name)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", {
+    onSubmit: handleEdit
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "space-y-4"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+    className: "block text-sm font-medium text-gray-700"
+  }, "Email"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    type: "email",
+    required: true,
+    value: formData.email,
+    onChange: function onChange(e) {
+      return setFormData(_objectSpread(_objectSpread({}, formData), {}, {
+        email: e.target.value
+      }));
+    },
+    className: "mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+    className: "block text-sm font-medium text-gray-700"
+  }, "Nouveau mot de passe"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    type: "password",
+    value: formData.password,
+    onChange: function onChange(e) {
+      return setFormData(_objectSpread(_objectSpread({}, formData), {}, {
+        password: e.target.value
+      }));
+    },
+    className: "mt-1 block w-full border border-gray-300 rounded-md px-3 py-2",
+    placeholder: "Laisser vide pour ne pas changer"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+    className: "block text-sm font-medium text-gray-700"
+  }, "Pr\xE9nom"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    type: "text",
+    required: true,
+    value: formData.prenom,
+    onChange: function onChange(e) {
+      return setFormData(_objectSpread(_objectSpread({}, formData), {}, {
+        prenom: e.target.value
+      }));
+    },
+    className: "mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+    className: "block text-sm font-medium text-gray-700"
+  }, "Nom"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    type: "text",
+    required: true,
+    value: formData.nom,
+    onChange: function onChange(e) {
+      return setFormData(_objectSpread(_objectSpread({}, formData), {}, {
+        nom: e.target.value
+      }));
+    },
+    className: "mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+    className: "block text-sm font-medium text-gray-700"
+  }, "R\xF4le"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("select", {
+    value: formData.role,
+    onChange: function onChange(e) {
+      return setFormData(_objectSpread(_objectSpread({}, formData), {}, {
+        role: e.target.value
+      }));
+    },
+    className: "mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("option", {
+    value: "user"
+  }, "\uD83D\uDC64 Utilisateur"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("option", {
+    value: "admin"
+  }, "\uD83D\uDC51 Administrateur")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Object(function webpackMissingModule() { var e = new Error("Cannot find module '../../react/components/ui/dialog'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()), {
+    className: "mt-6"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    type: "button",
+    onClick: function onClick() {
+      setShowEditModal(false);
+      resetForm();
+    },
+    className: "px-4 py-2 text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50"
+  }, "Annuler"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    type: "submit",
+    className: "px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+  }, "Modifier"))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Object(function webpackMissingModule() { var e = new Error("Cannot find module '../../react/components/ui/dialog'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()), {
+    open: showDeleteModal,
+    onOpenChange: setShowDeleteModal
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Object(function webpackMissingModule() { var e = new Error("Cannot find module '../../react/components/ui/dialog'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()), {
+    className: "sm:max-w-md"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Object(function webpackMissingModule() { var e = new Error("Cannot find module '../../react/components/ui/dialog'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Object(function webpackMissingModule() { var e = new Error("Cannot find module '../../react/components/ui/dialog'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()), null, "\uD83D\uDDD1\uFE0F Supprimer l'utilisateur")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "py-4"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
+    className: "text-sm text-gray-600"
+  }, "\xCAtes-vous s\xFBr de vouloir supprimer l'utilisateur", ' ', /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", {
+    className: "text-gray-900"
+  }, userToDelete === null || userToDelete === void 0 ? void 0 : userToDelete.full_name), " ?"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
+    className: "text-sm text-red-600 mt-2"
+  }, "Cette action est irr\xE9versible.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Object(function webpackMissingModule() { var e = new Error("Cannot find module '../../react/components/ui/dialog'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    type: "button",
+    onClick: function onClick() {
+      setShowDeleteModal(false);
+      setUserToDelete(null);
+    },
+    className: "px-4 py-2 text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50"
+  }, "Annuler"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    type: "button",
+    onClick: handleDelete,
+    className: "px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+  }, "Supprimer")))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AdminPanel);
 
@@ -2069,6 +2445,62 @@ var ApiService = /*#__PURE__*/function () {
         return _deleteUser.apply(this, arguments);
       }
       return deleteUser;
+    }()
+  }, {
+    key: "createUser",
+    value: function () {
+      var _createUser = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee11(userData) {
+        return _regenerator().w(function (_context11) {
+          while (1) switch (_context11.n) {
+            case 0:
+              return _context11.a(2, this.request('/admin/users', {
+                method: 'POST',
+                body: JSON.stringify(userData)
+              }));
+          }
+        }, _callee11, this);
+      }));
+      function createUser(_x10) {
+        return _createUser.apply(this, arguments);
+      }
+      return createUser;
+    }()
+  }, {
+    key: "updateUser",
+    value: function () {
+      var _updateUser = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee12(id, userData) {
+        return _regenerator().w(function (_context12) {
+          while (1) switch (_context12.n) {
+            case 0:
+              return _context12.a(2, this.request("/admin/users/".concat(id), {
+                method: 'PUT',
+                body: JSON.stringify(userData)
+              }));
+          }
+        }, _callee12, this);
+      }));
+      function updateUser(_x11, _x12) {
+        return _updateUser.apply(this, arguments);
+      }
+      return updateUser;
+    }()
+  }, {
+    key: "getUser",
+    value: function () {
+      var _getUser = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee13(id) {
+        return _regenerator().w(function (_context13) {
+          while (1) switch (_context13.n) {
+            case 0:
+              return _context13.a(2, this.request("/admin/users/".concat(id), {
+                method: 'GET'
+              }));
+          }
+        }, _callee13, this);
+      }));
+      function getUser(_x13) {
+        return _getUser.apply(this, arguments);
+      }
+      return getUser;
     }()
   }]);
 }(); // Instance globale
