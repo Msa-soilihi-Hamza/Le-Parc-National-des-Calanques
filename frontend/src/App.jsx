@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import LoginForm from './components/auth/LoginForm.jsx';
 import SignupPage from './components/auth/SignupPage.jsx';
 import UserProfile from './components/auth/UserProfile.jsx';
+import SentiersContainer from './components/sentiers/SentiersContainer.jsx';
 import api from './services/api.js';
 
 const App = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showSignup, setShowSignup] = useState(false);
+  const [currentPage, setCurrentPage] = useState('profile'); // 'profile' ou 'sentiers'
 
   useEffect(() => {
     checkAuth();
@@ -16,7 +18,8 @@ const App = () => {
   const checkAuth = async () => {
     try {
       const response = await api.get('/auth/me');
-      setUser(response);
+      console.log('🔍 checkAuth response:', response);
+      setUser(response.user || response);
     } catch (error) {
       console.log('Non authentifié');
       setUser(null);
@@ -26,6 +29,9 @@ const App = () => {
   };
 
   const handleLogin = (userData) => {
+    console.log('📊 handleLogin appelé avec:', userData);
+    console.log('📊 Type:', typeof userData);
+    console.log('📊 Clés:', userData ? Object.keys(userData) : 'null');
     setUser(userData);
     setShowSignup(false);
   };
@@ -68,6 +74,10 @@ const App = () => {
     );
   }
 
+  console.log('🎯 Render App - user:', user);
+  console.log('🎯 User existe?', !!user);
+  console.log('🎯 Type user:', typeof user);
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -77,9 +87,32 @@ const App = () => {
             <h1 className="text-2xl font-bold">
               🏔️ Parc National des Calanques
             </h1>
-            {user && (
+            {(user || localStorage.getItem('auth_token')) && (
               <div className="flex items-center gap-4">
-                <span>Bonjour {user.prenom}</span>
+                <nav className="flex items-center gap-2">
+                  <button
+                    onClick={() => setCurrentPage('profile')}
+                    className={`px-3 py-1 text-sm rounded-md transition-colors ${
+                      currentPage === 'profile' 
+                        ? 'bg-primary-foreground/20 text-primary-foreground' 
+                        : 'text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10'
+                    }`}
+                  >
+                    👤 Profil
+                  </button>
+                  <button
+                    onClick={() => setCurrentPage('sentiers')}
+                    className={`px-3 py-1 text-sm rounded-md transition-colors ${
+                      currentPage === 'sentiers' 
+                        ? 'bg-primary-foreground/20 text-primary-foreground' 
+                        : 'text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10'
+                    }`}
+                  >
+                    🥾 Sentiers
+                  </button>
+                </nav>
+                <div className="h-4 w-px bg-primary-foreground/20"></div>
+                <span>Bonjour {user?.prenom || user?.first_name || 'Utilisateur'}</span>
                 <button 
                   onClick={handleLogout}
                   className="px-3 py-1 text-sm bg-transparent border border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10 rounded-md transition-colors"
@@ -94,10 +127,14 @@ const App = () => {
 
       {/* Main Content */}
       <main>
-        {user ? (
-          <div className="container mx-auto px-4 py-8">
-            <UserProfile user={user} onUpdate={setUser} />
-          </div>
+        {(user || localStorage.getItem('auth_token')) ? (
+          currentPage === 'profile' ? (
+            <div className="container mx-auto px-4 py-8">
+              <UserProfile user={user} onUpdate={setUser} />
+            </div>
+          ) : (
+            <SentiersContainer />
+          )
         ) : showSignup ? (
           <SignupPage 
             onSuccess={handleSignup}

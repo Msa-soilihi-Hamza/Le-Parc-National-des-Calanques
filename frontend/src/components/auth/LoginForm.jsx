@@ -29,8 +29,11 @@ const LoginForm = ({ onSuccess, onSwitchToSignup }) => {
     try {
       const response = await api.login(email, password, remember);
       console.log('Login success:', response);
+      console.log('🔍 response.user:', response.user);
+      console.log('🔍 onSuccess fonction:', typeof onSuccess);
       
       if (onSuccess) {
+        console.log('🚀 Appel onSuccess avec:', response.user || response);
         onSuccess(response.user || response);
       }
     } catch (err) {

@@ -13,6 +13,12 @@ return [
     // 'PUT /api/users/{id}' => 'UserController@update',
     // 'DELETE /api/users/{id}' => 'UserController@delete',
 
+    // Routes Sentiers
+    'GET /api/sentiers' => 'SentierController@index',
+    'GET /api/sentiers/filters' => 'SentierController@filters', 
+    'GET /api/sentiers/stats' => 'SentierController@stats',
+    'GET /api/sentiers/{id}' => 'SentierController@show',
+
     // Routes Zones (à créer plus tard)
     // 'GET /api/zones' => 'ZoneController@index',
     // 'GET /api/zones/{id}' => 'ZoneController@show',

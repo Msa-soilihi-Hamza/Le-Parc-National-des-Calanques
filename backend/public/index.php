@@ -30,12 +30,15 @@ require_once __DIR__ . '/../../autoload.php';
 require_once __DIR__ . '/../config/bootstrap.php';
 
 use ParcCalanques\Auth\AuthBootstrap;
+use ParcCalanques\Sentiers\SentierBootstrap;
 use ParcCalanques\Shared\Exceptions\AuthException;
 
 try {
-    // Initialize authentication system
+    // Initialize systems
     AuthBootstrap::init();
+    SentierBootstrap::init();
     $apiController = AuthBootstrap::apiController();
+    $sentierController = SentierBootstrap::getSentierController();
 
     // Get the request path and method
     $requestUri = $_SERVER['REQUEST_URI'] ?? '/';
@@ -128,7 +131,38 @@ try {
             }
             break;
 
+        // Routes Sentiers
+        case '/api/sentiers':
+        case '/sentiers':
+            if ($requestMethod === 'GET') {
+                $sentierController->index(new \ParcCalanques\Core\Request());
+            }
+            break;
+
+        case '/api/sentiers/filters':
+        case '/sentiers/filters':
+            if ($requestMethod === 'GET') {
+                $sentierController->filters(new \ParcCalanques\Core\Request());
+            }
+            break;
+
+        case '/api/sentiers/stats':
+        case '/sentiers/stats':
+            if ($requestMethod === 'GET') {
+                $sentierController->stats(new \ParcCalanques\Core\Request());
+            }
+            break;
+
         default:
+            // Gérer les routes avec paramètres (ex: /api/sentiers/{id})
+            if (preg_match('#^/api/sentiers/(\d+)$#', $path, $matches) || preg_match('#^/sentiers/(\d+)$#', $path, $matches)) {
+                if ($requestMethod === 'GET') {
+                    $request = new \ParcCalanques\Core\Request();
+                    $request->setRouteParam('id', $matches[1]);
+                    $sentierController->show($request);
+                    break;
+                }
+            }
             http_response_code(404);
             header('Content-Type: application/json');
             echo json_encode([
