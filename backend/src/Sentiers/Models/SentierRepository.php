@@ -27,7 +27,7 @@ class SentierRepository
             LEFT JOIN Zone z ON s.id_zone = z.id_zone
             ORDER BY s.nom ASC
         ";
-
+        
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         
@@ -35,7 +35,7 @@ class SentierRepository
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $sentiers[] = $this->createSentierFromRow($row);
         }
-
+        
         return $sentiers;
     }
 
@@ -55,11 +55,11 @@ class SentierRepository
             LEFT JOIN Zone z ON s.id_zone = z.id_zone
             WHERE s.id_sentier = :id
         ";
-
+        
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
-
+        
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         
         return $row ? $this->createSentierFromRow($row) : null;
@@ -91,7 +91,7 @@ class SentierRepository
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $sentiers[] = $this->createSentierFromRow($row);
         }
-
+        
         return $sentiers;
     }
 
