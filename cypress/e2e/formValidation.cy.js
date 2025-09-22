@@ -1,6 +1,6 @@
 describe('Validation des Formulaires d\'Authentification', () => {
   // Configuration de base
-  const baseUrl = 'http://localhost:3005' // Port Vite après nettoyage du cache
+  const baseUrl = 'http://localhost:3004' // Port Vite après nettoyage du cache
 
   beforeEach(() => {
     // Visiter la page d'accueil

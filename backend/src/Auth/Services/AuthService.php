@@ -8,6 +8,7 @@ use ParcCalanques\Auth\Models\User;
 use ParcCalanques\Auth\Models\UserRepository;
 use ParcCalanques\Shared\Exceptions\AuthException;
 use ParcCalanques\Shared\Services\EmailService;
+use ParcCalanques\Core\Request;
 
 class AuthService
 {
@@ -159,19 +160,41 @@ class AuthService
             throw new AuthException('JWT service not available');
         }
 
+        // Sanitisation supplémentaire des données
+        $sanitizedData = Request::sanitize([
+            'nom' => $nom,
+            'prenom' => $prenom,
+            'email' => $email,
+            'password' => $password
+        ], [
+            'nom' => 'string',
+            'prenom' => 'string',
+            'email' => 'email',
+            'password' => 'string'
+        ]);
+
+        // Validation stricte des noms/prénoms
+        if (!$this->validateName($sanitizedData['nom'])) {
+            throw new AuthException('Le nom contient des caractères non autorisés');
+        }
+
+        if (!$this->validateName($sanitizedData['prenom'])) {
+            throw new AuthException('Le prénom contient des caractères non autorisés');
+        }
+
         // Validation du mot de passe avec regex - minimum 12 caractères
-        if (!preg_match('/^.{12,}$/', $password)) {
+        if (!preg_match('/^.{12,}$/', $sanitizedData['password'])) {
             throw new AuthException('Le mot de passe doit contenir au moins 12 caractères');
         }
 
         $userData = [
-            'first_name' => $prenom,
-            'last_name' => $nom,
-            'email' => $email,
-            'password' => $password
+            'first_name' => $sanitizedData['prenom'],
+            'last_name' => $sanitizedData['nom'],
+            'email' => $sanitizedData['email'],
+            'password' => $sanitizedData['password']
         ];
 
-        if ($this->userRepository->emailExists($email)) {
+        if ($this->userRepository->emailExists($sanitizedData['email'])) {
             throw new AuthException('Email address already exists');
         }
 
@@ -400,5 +423,15 @@ class AuthService
             true,
             true
         );
+    }
+
+    /**
+     * Valide que le nom/prénom ne contient que des caractères autorisés
+     */
+    private function validateName(string $name): bool
+    {
+        // Autorise seulement les lettres, espaces, apostrophes et traits d'union
+        // Supporte les caractères accentués français
+        return preg_match('/^[a-zA-ZÀ-ÿ\s\'-]{2,50}$/u', $name) === 1;
     }
 }

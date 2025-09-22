@@ -8,6 +8,7 @@ use ParcCalanques\Auth\Services\AuthService;
 use ParcCalanques\Auth\Services\JwtService;
 use ParcCalanques\Auth\Middleware\JwtMiddleware;
 use ParcCalanques\Shared\Exceptions\AuthException;
+use ParcCalanques\Core\Request;
 
 class ApiController
 {
@@ -27,10 +28,19 @@ class ApiController
             $this->jwtMiddleware->sendJsonError('Email and password are required', 400);
         }
 
+        // Sanitiser les données d'entrée
+        $sanitizationRules = [
+            'email' => 'email',
+            'password' => 'string',
+            'remember' => 'bool'
+        ];
+
+        $sanitizedInput = Request::sanitize($input, $sanitizationRules);
+
         try {
             // Récupérer le paramètre remember (optionnel)
-            $remember = (bool) ($input['remember'] ?? false);
-            $result = $this->authService->loginWithJwt($input['email'], $input['password'], $remember);
+            $remember = (bool) ($sanitizedInput['remember'] ?? false);
+            $result = $this->authService->loginWithJwt($sanitizedInput['email'], $sanitizedInput['password'], $remember);
             
             $this->jwtMiddleware->sendJsonResponse([
                 'success' => true,
@@ -105,12 +115,31 @@ class ApiController
             $this->jwtMiddleware->sendJsonError('Nom, prénom, email and password are required', 400);
         }
 
+        // Sanitiser et valider les données d'entrée
+        $sanitizationRules = [
+            'nom' => 'string',
+            'prenom' => 'string',
+            'email' => 'email',
+            'password' => 'string'
+        ];
+
+        $sanitizedInput = Request::sanitize($input, $sanitizationRules);
+
+        // Validation supplémentaire des noms/prénoms
+        if (!$this->validateName($sanitizedInput['nom'])) {
+            $this->jwtMiddleware->sendJsonError('Le nom contient des caractères non autorisés', 400);
+        }
+
+        if (!$this->validateName($sanitizedInput['prenom'])) {
+            $this->jwtMiddleware->sendJsonError('Le prénom contient des caractères non autorisés', 400);
+        }
+
         try {
             $result = $this->authService->registerWithJwt(
-                $input['nom'],
-                $input['prenom'],
-                $input['email'],
-                $input['password']
+                $sanitizedInput['nom'],
+                $sanitizedInput['prenom'],
+                $sanitizedInput['email'],
+                $sanitizedInput['password']
             );
             
             $this->jwtMiddleware->sendJsonResponse([
@@ -263,5 +292,15 @@ class ApiController
             error_log("Erreur lors de la vérification d'email : " . $e->getMessage());
             $this->jwtMiddleware->sendJsonError('Une erreur est survenue lors de la vérification. Veuillez réessayer plus tard.', 500);
         }
+    }
+
+    /**
+     * Valide que le nom/prénom ne contient que des caractères autorisés
+     */
+    private function validateName(string $name): bool
+    {
+        // Autorise seulement les lettres, espaces, apostrophes et traits d'union
+        // Supporte les caractères accentués français
+        return preg_match('/^[a-zA-ZÀ-ÿ\s\'-]{2,50}$/u', $name) === 1;
     }
 }

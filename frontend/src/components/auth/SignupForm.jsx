@@ -27,7 +27,9 @@ const SignupForm = ({ onSuccess, onSwitchToLogin }) => {
     switch (fieldName) {
       case 'nom':
       case 'prenom':
-        return value.trim().length >= 2;
+        // Validation stricte : lettres, espaces, apostrophes, traits d'union + accents français
+        const nameRegex = /^[a-zA-ZÀ-ÿ\s\'-]{2,50}$/;
+        return value.trim().length >= 2 && nameRegex.test(value.trim());
       case 'email':
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(value);
@@ -43,13 +45,21 @@ const SignupForm = ({ onSuccess, onSwitchToLogin }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    // Sanitisation côté frontend pour les noms/prénoms
+    let sanitizedValue = value;
+    if (name === 'nom' || name === 'prenom') {
+      // Supprime les caractères dangereux et non autorisés
+      sanitizedValue = value.replace(/[<>\"'&;(){}[\]]/g, '');
+    }
+
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: sanitizedValue
     }));
 
-    // Validation en temps réel
-    const isValid = validateField(name, value);
+    // Validation en temps réel avec la valeur sanitisée
+    const isValid = validateField(name, sanitizedValue);
     setFieldValidation(prev => ({
       ...prev,
       [name]: isValid
@@ -131,7 +141,11 @@ const SignupForm = ({ onSuccess, onSwitchToLogin }) => {
     switch (fieldName) {
       case 'nom':
       case 'prenom':
-        return isValid ? 'Valide' : 'Minimum 2 caractères';
+        if (!value) return 'Champ requis';
+        if (value.trim().length < 2) return 'Minimum 2 caractères';
+        const nameRegex = /^[a-zA-ZÀ-ÿ\s\'-]{2,50}$/;
+        if (!nameRegex.test(value.trim())) return 'Caractères non autorisés';
+        return 'Valide';
       case 'email':
         return isValid ? 'Email valide' : 'Format email invalide';
       case 'password':

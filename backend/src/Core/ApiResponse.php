@@ -138,6 +138,22 @@ class ApiResponse
             header('X-Content-Type-Options: nosniff');
             header('X-Frame-Options: DENY');
             header('X-XSS-Protection: 1; mode=block');
+
+            // Content Security Policy pour prévenir les attaques XSS
+            $csp = "default-src 'self'; " .
+                   "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " .
+                   "style-src 'self' 'unsafe-inline'; " .
+                   "img-src 'self' data: https:; " .
+                   "font-src 'self' https:; " .
+                   "connect-src 'self' http://localhost:8000 http://localhost:3004; " .
+                   "frame-ancestors 'none'; " .
+                   "base-uri 'self'; " .
+                   "form-action 'self'";
+            header('Content-Security-Policy: ' . $csp);
+
+            // Référence des headers de sécurité supplémentaires
+            header('Referrer-Policy: strict-origin-when-cross-origin');
+            header('Permissions-Policy: geolocation=(), microphone=(), camera=()');
         }
 
         // Ajouter timestamp et environnement en développement
