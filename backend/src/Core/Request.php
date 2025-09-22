@@ -12,6 +12,37 @@ class Request
 {
     private static ?array $jsonInput = null;
     private static ?User $authenticatedUser = null;
+    private array $routeParams = [];
+    private array $queryParams = [];
+
+    public function __construct()
+    {
+        $this->queryParams = $_GET;
+    }
+
+    /**
+     * Définit un paramètre de route
+     */
+    public function setRouteParam(string $key, $value): void
+    {
+        $this->routeParams[$key] = $value;
+    }
+
+    /**
+     * Récupère un paramètre de route
+     */
+    public function getRouteParam(string $key, $default = null)
+    {
+        return $this->routeParams[$key] ?? $default;
+    }
+
+    /**
+     * Récupère un paramètre de query string
+     */
+    public function getQueryParam(string $key, $default = null)
+    {
+        return $this->queryParams[$key] ?? $default;
+    }
 
     /**
      * Récupère les données JSON du body de la requête

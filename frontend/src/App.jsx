@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import LoginForm from './components/auth/LoginForm.jsx';
 import SignupPage from './components/auth/SignupPage.jsx';
 import UserProfile from './components/auth/UserProfile.jsx';
+import SentiersContainer from './components/sentiers/SentiersContainer.jsx';
 import EmailVerification from './components/auth/EmailVerification.jsx';
 import Header from './components/layout/Header.jsx';
 import api from './services/api.js';
@@ -10,6 +11,7 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showSignup, setShowSignup] = useState(false);
+  const [currentPage, setCurrentPage] = useState('profile'); // 'profile' ou 'sentiers'
 
   // Détecter si nous sommes sur la page de vérification d'email
   const isEmailVerificationPage = () => {
@@ -98,16 +100,29 @@ const App = () => {
     );
   }
 
+  console.log('🎯 Render App - user:', user);
+  console.log('🎯 User existe?', !!user);
+  console.log('🎯 Type user:', typeof user);
+
   return (
     <div className="min-h-screen bg-background">
-      <Header user={user} onLogout={handleLogout} />
+      <Header 
+        user={user} 
+        onLogout={handleLogout} 
+        currentPage={currentPage}
+        onPageChange={setCurrentPage}
+      />
 
       {/* Main Content */}
       <main>
-        {user ? (
-          <div className="container mx-auto px-4 py-8">
-            <UserProfile user={user} onUpdate={setUser} />
-          </div>
+        {(user || localStorage.getItem('auth_token')) ? (
+          currentPage === 'profile' ? (
+            <div className="container mx-auto px-4 py-8">
+              <UserProfile user={user} onUpdate={setUser} />
+            </div>
+          ) : (
+            <SentiersContainer />
+          )
         ) : showSignup ? (
           <SignupPage 
             onSuccess={handleSignup}

@@ -7,9 +7,12 @@ class ApiService {
     const isDev = import.meta.env.DEV;
 
     // URL de base de l'API
-    this.baseURL = isDev
-      ? 'http://localhost:8000/api'  // Serveur PHP en développement
-      : '/api';  // Production
+    // Détection automatique de l'environnement
+    const isProduction = !isDev || window.location.hostname !== 'localhost';
+    
+    this.baseURL = isProduction
+      ? '/backend/public/index.php'  // Production - chemin relatif
+      : 'http://localhost/Le-Parc-National-des-Calanques/backend/public/index.php';  // Développement
 
     // Configuration axios
     this.client = axios.create({
