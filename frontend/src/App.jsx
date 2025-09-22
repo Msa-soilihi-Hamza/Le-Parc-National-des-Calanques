@@ -2,26 +2,44 @@ import React, { useState, useEffect } from 'react';
 import LoginForm from './components/auth/LoginForm.jsx';
 import SignupPage from './components/auth/SignupPage.jsx';
 import UserProfile from './components/auth/UserProfile.jsx';
-import SentiersContainer from './components/sentiers/SentiersContainer.jsx';
+import EmailVerification from './components/auth/EmailVerification.jsx';
+import Header from './components/layout/Header.jsx';
 import api from './services/api.js';
 
 const App = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showSignup, setShowSignup] = useState(false);
-  const [currentPage, setCurrentPage] = useState('profile'); // 'profile' ou 'sentiers'
+
+  // Détecter si nous sommes sur la page de vérification d'email
+  const isEmailVerificationPage = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.has('token') && urlParams.has('verify');
+  };
+
+  // Debug du state user
+  console.log('🔄 App render - user:', user ? 'connecté' : 'non connecté', 'loading:', loading);
 
   useEffect(() => {
     checkAuth();
   }, []);
 
   const checkAuth = async () => {
+    // Debug du token
+    const storedToken = localStorage.getItem('auth_token');
+    console.log('🔍 Token dans localStorage:', storedToken ? 'présent' : 'absent');
+
     try {
       const response = await api.get('/auth/me');
-      console.log('🔍 checkAuth response:', response);
-      setUser(response.user || response);
+      console.log('✅ Auth réussie:', response);
+
+      // Extraire l'objet user de la réponse
+      const userData = response.user || response;
+      console.log('👤 Données utilisateur extraites:', userData);
+
+      setUser(userData);
     } catch (error) {
-      console.log('Non authentifié');
+      console.log('❌ Non authentifié:', error.response?.status, error.response?.data);
       setUser(null);
     } finally {
       setLoading(false);
@@ -29,10 +47,9 @@ const App = () => {
   };
 
   const handleLogin = (userData) => {
-    console.log('📊 handleLogin appelé avec:', userData);
-    console.log('📊 Type:', typeof userData);
-    console.log('📊 Clés:', userData ? Object.keys(userData) : 'null');
-    setUser(userData);
+    // Extraire l'objet user si la réponse est wrappée
+    const user = userData.user || userData;
+    setUser(user);
     setShowSignup(false);
   };
 
@@ -45,9 +62,11 @@ const App = () => {
       setShowSignup(false); // Retourner à la page de login
       return;
     }
-    
+
     // Si les tokens sont présents, connecter normalement l'utilisateur
-    setUser(userData);
+    // Extraire l'objet user si la réponse est wrappée
+    const user = userData.user || userData;
+    setUser(user);
     setShowSignup(false);
   };
 
@@ -66,6 +85,11 @@ const App = () => {
   const switchToLogin = () => setShowSignup(false);
   const switchToSignup = () => setShowSignup(true);
 
+  // Si c'est la page de vérification d'email, afficher directement le composant
+  if (isEmailVerificationPage()) {
+    return <EmailVerification />;
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -80,50 +104,7 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="bg-primary text-primary-foreground">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold">
-              🏔️ Parc National des Calanques
-            </h1>
-            {(user || localStorage.getItem('auth_token')) && (
-              <div className="flex items-center gap-4">
-                <nav className="flex items-center gap-2">
-                  <button
-                    onClick={() => setCurrentPage('profile')}
-                    className={`px-3 py-1 text-sm rounded-md transition-colors ${
-                      currentPage === 'profile' 
-                        ? 'bg-primary-foreground/20 text-primary-foreground' 
-                        : 'text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10'
-                    }`}
-                  >
-                    👤 Profil
-                  </button>
-                  <button
-                    onClick={() => setCurrentPage('sentiers')}
-                    className={`px-3 py-1 text-sm rounded-md transition-colors ${
-                      currentPage === 'sentiers' 
-                        ? 'bg-primary-foreground/20 text-primary-foreground' 
-                        : 'text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10'
-                    }`}
-                  >
-                    🥾 Sentiers
-                  </button>
-                </nav>
-                <div className="h-4 w-px bg-primary-foreground/20"></div>
-                <span>Bonjour {user?.prenom || user?.first_name || 'Utilisateur'}</span>
-                <button 
-                  onClick={handleLogout}
-                  className="px-3 py-1 text-sm bg-transparent border border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10 rounded-md transition-colors"
-                >
-                  Déconnexion
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      </header>
+      <Header user={user} onLogout={handleLogout} />
 
       {/* Main Content */}
       <main>

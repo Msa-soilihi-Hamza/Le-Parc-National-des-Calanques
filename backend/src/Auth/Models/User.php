@@ -169,6 +169,9 @@ class User
         return $this->emailVerificationExpiresAt;
     }
 
+    /**
+     * Vérifie si l'email de l'utilisateur est vérifié
+     */
     public function isEmailVerifiedByToken(): bool
     {
         return $this->emailVerified;

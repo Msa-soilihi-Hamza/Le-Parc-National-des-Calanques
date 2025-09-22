@@ -233,4 +233,35 @@ class ApiController
             'jwt_enabled' => true
         ]);
     }
+
+    /**
+     * Vérifie l'email via token et retourne JSON
+     */
+    public function verifyEmail(): void
+    {
+        $this->jwtMiddleware->validateApiRequest();
+
+        try {
+            $token = $_GET['token'] ?? null;
+
+            if (!$token) {
+                $this->jwtMiddleware->sendJsonError('Token de vérification manquant.', 400);
+                return;
+            }
+
+            $result = $this->authService->verifyEmailByToken($token);
+
+            $this->jwtMiddleware->sendJsonResponse([
+                'success' => true,
+                'message' => $result['message'],
+                'user' => $result['user']
+            ]);
+
+        } catch (AuthException $e) {
+            $this->jwtMiddleware->sendJsonError($e->getMessage(), 400);
+        } catch (\Exception $e) {
+            error_log("Erreur lors de la vérification d'email : " . $e->getMessage());
+            $this->jwtMiddleware->sendJsonError('Une erreur est survenue lors de la vérification. Veuillez réessayer plus tard.', 500);
+        }
+    }
 }

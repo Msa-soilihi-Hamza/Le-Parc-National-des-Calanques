@@ -57,7 +57,7 @@ class AuthService
         }
 
         $user = $this->userRepository->findByEmail($email);
-        
+
         if (!$user) {
             throw new AuthException(AuthException::USER_NOT_FOUND);
         }
@@ -66,14 +66,12 @@ class AuthService
             throw new AuthException(AuthException::USER_INACTIVE);
         }
 
-        // Vérifier que l'email est vérifié
-        if (!$user->isEmailVerifiedByToken()) {
-            throw new AuthException('Veuillez vérifier votre email avant de vous connecter');
-        }
-
         if (!$user->verifyPassword($password)) {
             throw new AuthException(AuthException::INVALID_CREDENTIALS);
         }
+
+        // Note: Permettre la connexion même sans email vérifié pour l'instant
+        $emailVerificationRequired = !$user->isEmailVerifiedByToken();
 
         // Créer un remember token si demandé
         if ($remember) {
@@ -81,10 +79,11 @@ class AuthService
         }
 
         $tokens = $this->jwtService->generateTokenPair($user);
-        
+
         return [
             'user' => $user->toArray(),
-            'tokens' => $tokens
+            'tokens' => $tokens,
+            'email_verification_required' => $emailVerificationRequired
         ];
     }
 
@@ -284,7 +283,7 @@ class AuthService
     public function verifyEmailByToken(string $token): array
     {
         $user = $this->userRepository->findByVerificationToken($token);
-        
+
         if (!$user) {
             throw new AuthException('Token de vérification invalide');
         }

@@ -1,144 +1,145 @@
+import axios from 'axios';
+
 // Service API pour communiquer avec le backend PHP
 class ApiService {
   constructor() {
-    // Détection automatique du chemin de base avec debug
-    const pathParts = window.location.pathname.split('/').filter(part => part !== '');
+    // Configuration de base pour différents environnements
+    const isDev = import.meta.env.DEV;
 
-    // Si on est dans un sous-dossier du serveur local
-    if (pathParts.length > 0 && !pathParts[0].includes('.')) {
-      this.baseUrl = '/' + pathParts[0];
-    } else {
-      this.baseUrl = '';
-    }
+    // URL de base de l'API
+    this.baseURL = isDev
+      ? 'http://localhost:8000/api'  // Serveur PHP en développement
+      : '/api';  // Production
 
-    console.log('API Base URL detected:', this.baseUrl);
-    this.token = localStorage.getItem('auth_token');
+    // Configuration axios
+    this.client = axios.create({
+      baseURL: this.baseURL,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      timeout: 10000
+    });
+
+    // Intercepteur pour ajouter le token automatiquement
+    this.client.interceptors.request.use(
+      (config) => {
+        const token = localStorage.getItem('auth_token');
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+      },
+      (error) => Promise.reject(error)
+    );
+
+    // Intercepteur pour gérer les réponses et erreurs
+    this.client.interceptors.response.use(
+      (response) => response.data,
+      (error) => {
+        if (error.response?.status === 401) {
+          // Token expiré ou invalide - juste nettoyer sans recharger
+          this.clearAuthData();
+          // NE PAS recharger automatiquement la page !
+        }
+        return Promise.reject(error);
+      }
+    );
+
+    console.log('API Base URL:', this.baseURL);
   }
 
   setToken(token) {
-    this.token = token;
     if (token) {
       localStorage.setItem('auth_token', token);
+      console.log('💾 Token stocké:', token.substring(0, 20) + '...');
     } else {
       localStorage.removeItem('auth_token');
+      console.log('🗑️ Token supprimé');
     }
   }
 
   clearAuthData() {
-    this.setToken(null);
-    localStorage.clear(); // Nettoyer tout le localStorage
+    localStorage.removeItem('auth_token');
   }
 
-  async request(endpoint, options = {}) {
-    const url = `${this.baseUrl}/backend/public/index.php${endpoint}`;
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        ...(this.token ? { 'Authorization': `Bearer ${this.token}` } : {}),
-        ...options.headers
-      },
-      ...options
-    };
+  // Méthodes HTTP génériques
+  async get(endpoint) {
+    return this.client.get(endpoint);
+  }
 
-    try {
-      console.log('Calling API URL:', url);
-      const response = await fetch(url, config);
+  async post(endpoint, data = {}) {
+    return this.client.post(endpoint, data);
+  }
 
-      // Vérifier le type de contenu
-      const contentType = response.headers.get('content-type');
+  async put(endpoint, data = {}) {
+    return this.client.put(endpoint, data);
+  }
 
-      if (!contentType || !contentType.includes('application/json')) {
-        const textResponse = await response.text();
-        console.error('Response is not JSON:', textResponse.substring(0, 200));
-        throw new Error(`Le serveur a retourné du ${contentType || 'contenu non-JSON'} au lieu de JSON. Vérifiez l'URL de l'API.`);
-      }
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        // Si le token est invalide, le supprimer et permettre à l'utilisateur de se reconnecter
-        if (response.status === 401 && (data.message?.includes('token') || data.message?.includes('signature'))) {
-          console.log('Token invalide détecté, nettoyage...');
-          this.setToken(null);
-        }
-        throw new Error(data.message || 'Erreur API');
-      }
-
-      return data;
-    } catch (error) {
-      console.error('Erreur API:', error);
-      throw error;
-    }
+  async delete(endpoint) {
+    return this.client.delete(endpoint);
   }
 
   // Authentification
   async login(email, password, remember = false) {
-    const response = await this.request('/auth/login', {
-      method: 'POST',
-      body: JSON.stringify({ email, password, remember })
+    console.log('🔐 Tentative de login...');
+    const response = await this.post('/auth/login', {
+      email,
+      password,
+      remember
     });
-    
+
+    console.log('📥 Réponse login:', response);
+
     // Stocker le token après connexion réussie
-    if (response.tokens && response.tokens.access_token) {
+    if (response.tokens?.access_token) {
       this.setToken(response.tokens.access_token);
+      console.log('✅ Token sauvegardé avec succès');
+    } else {
+      console.log('❌ Pas de token dans la réponse');
     }
-    
+
     return response;
   }
 
   async register(userData) {
-    return this.request('/auth/register', {
-      method: 'POST',
-      body: JSON.stringify(userData)
-    });
+    return this.post('/auth/register', userData);
   }
 
   async signup(userData) {
-    const response = await this.request('/auth/register', {
-      method: 'POST',
-      body: JSON.stringify(userData)
-    });
-    
+    const response = await this.post('/auth/register', userData);
+
     // Stocker le token après inscription réussie si fourni
-    if (response.tokens && response.tokens.access_token) {
+    if (response.tokens?.access_token) {
       this.setToken(response.tokens.access_token);
     }
-    
+
     return response;
   }
 
   async logout() {
-    const response = await this.request('/auth/logout', {
-      method: 'POST'
-    });
-    
-    // Supprimer le token après déconnexion
-    this.setToken(null);
-    
-    return response;
+    try {
+      await this.post('/auth/logout');
+    } catch (error) {
+      console.warn('Erreur lors de la déconnexion:', error);
+    } finally {
+      // Supprimer le token même en cas d'erreur
+      this.clearAuthData();
+    }
   }
 
-  // Profil utilisateur  
-  async get(endpoint) {
-    return this.request(endpoint);
+  // Vérification email
+  async verifyEmail(token) {
+    return this.get(`/auth/verify-email?token=${encodeURIComponent(token)}`);
   }
 
-  async post(endpoint, body = {}) {
-    return this.request(endpoint, {
-      method: 'POST',
-      body: JSON.stringify(body)
-    });
-  }
-
+  // Profil utilisateur
   async getUserProfile() {
-    return this.request('/auth/me');
+    return this.get('/auth/me');
   }
 
   async updateUserProfile(profileData) {
-    return this.request('/user/profile', {
-      method: 'PUT',
-      body: JSON.stringify(profileData)
-    });
+    return this.put('/user/profile', profileData);
   }
 }
 
