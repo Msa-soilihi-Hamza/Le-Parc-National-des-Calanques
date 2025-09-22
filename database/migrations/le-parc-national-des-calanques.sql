@@ -191,24 +191,7 @@ CREATE TABLE IF NOT EXISTS `reservation` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
-
---
--- Structure de la table `ressource_naturelle`
---
-
-DROP TABLE IF EXISTS `ressource_naturelle`;
-CREATE TABLE IF NOT EXISTS `ressource_naturelle` (
-  `id_ressource` int NOT NULL AUTO_INCREMENT,
-  `type` varchar(50) NOT NULL,
-  `nom` varchar(255) NOT NULL,
-  `etat` varchar(100) DEFAULT NULL,
-  `id_zone` int NOT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id_ressource`),
-  KEY `idx_zone` (`id_zone`),
-  KEY `idx_type` (`type`),
-  KEY `idx_etat` (`etat`)
+-
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
